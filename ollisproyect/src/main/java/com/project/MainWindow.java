@@ -1,5 +1,11 @@
 package com.project;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import com.project.model.User;
+import com.project.repository.UserRepository;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,6 +23,12 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
+
+    private UserRepository userRepository;
+
+    public MainWindow() {
+        this.userRepository = new UserRepository();
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -176,12 +188,29 @@ public class MainWindow extends Application {
             }
 
             if (isValid) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setHeaderText(null);
-                alert.setContentText("Registro exitoso");
-                alert.setTitle("Información");
-                alert.showAndWait();
-                stage.close();
+
+                LocalDate birthdayLocalDate = datePicker.getValue();
+                LocalDateTime birthday = birthdayLocalDate.atStartOfDay();
+
+                User user = new User(txtName.getText(), txtLastName.getText(), txtUserName.getText(), txtPassword.getText(), txtEmail.getText(), birthday);
+
+                boolean success = userRepository.CreateUser(user);
+
+                if (success) {
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setHeaderText(null);
+                    alert.setContentText("Registro exitoso");
+                    alert.setTitle("Información");
+                    alert.showAndWait();
+                    stage.close();
+                } else {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setHeaderText(null);
+                    alert.setContentText("Error al registrar el usuario");
+                    alert.setTitle("Error");
+                    alert.showAndWait();
+                    stage.close();
+                }
             }
 
         });
