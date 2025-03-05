@@ -206,7 +206,7 @@ public class MainWindow extends Application {
                 } else {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setHeaderText(null);
-                    alert.setContentText("Error al registrar el usuario");
+                    alert.setContentText("Error al registrar el usuario, debido a que ya existe");
                     alert.setTitle("Error");
                     alert.showAndWait();
                     stage.close();
@@ -236,8 +236,10 @@ public class MainWindow extends Application {
         TextField txtUserName = new TextField();
         txtUserName.setFont(new Font("Arial", 12));
 
+        Label errorUsername = createErrorLabel();
+
         HBox layoutUserName = new HBox(10);
-        layoutUserName.getChildren().addAll(lblUserName, txtUserName);
+        layoutUserName.getChildren().addAll(lblUserName, txtUserName, errorUsername);
 
         Label lblPassword = new Label("Contraseña:");
         lblPassword.setFont(new Font("Arial", 12));
@@ -245,8 +247,10 @@ public class MainWindow extends Application {
         PasswordField txtPassword = new PasswordField();
         txtPassword.setFont(new Font("Arial", 12));
 
+        Label errorPassword = createErrorLabel();
+
         HBox layoutPassword = new HBox(10);
-        layoutPassword.getChildren().addAll(lblPassword, txtPassword);
+        layoutPassword.getChildren().addAll(lblPassword, txtPassword, errorPassword);
 
         Button btnCancel = new Button("Cancelar");
         btnCancel.setFont(new Font("Arial", 12));
@@ -255,6 +259,47 @@ public class MainWindow extends Application {
 
         Button btnAccept = new Button("Aceptar");
         btnAccept.setFont(new Font("Arial", 12));
+
+        btnAccept.setOnAction(e -> {
+            boolean isValid = true;
+
+            if (txtUserName.getText().trim().isEmpty()) {
+                errorUsername.setText("El nombre de usuario no debe estar vacío");
+                isValid = false;
+            } else {
+                errorUsername.setText("");
+            }
+
+            if (txtPassword.getText().trim().isEmpty()) {
+                errorPassword.setText("La contraseña no debe estar vacío");
+                isValid = false;
+            } else if (txtPassword.getText().length() < 8) {
+                errorPassword.setText("La contraseña debe tener mínimo 8 caracteres");
+                isValid = false;
+            } else {
+                errorPassword.setText("");
+            }
+
+            if (isValid) {
+                boolean success = userRepository.ValidateUserLogIn(txtUserName, txtPassword);
+
+                if (success) {
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setHeaderText(null);
+                    alert.setContentText("Inicio de sesión exitoso");
+                    alert.setTitle("Información");
+                    alert.showAndWait();
+                    stage.close();
+                } else {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setHeaderText(null);
+                    alert.setContentText("Error al iniciar sesión, debido a que el usuario no existe");
+                    alert.setTitle("Error");
+                    alert.showAndWait();
+                    stage.close();
+                }
+            }
+        });
 
         HBox layoutButtons = new HBox(10);
         layoutButtons.getChildren().addAll(btnAccept, btnCancel);

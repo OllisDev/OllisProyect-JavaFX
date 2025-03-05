@@ -2,13 +2,26 @@ package com.project.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.project.model.User;
 
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+
 public class UserRepository {
 
     public boolean CreateUser(User user) {
+        if (ValidateUserRegisterUserName(user.getUserName())) {
+            System.out.println("El usuario ya existe en la base de datos");
+            return false;
+        }
+
+        if (ValidateUserRegisterEmail(user.getEmail())) {
+            System.out.println("El email ya existe en la base de datos");
+            return false;
+        }
         String query = "INSERT INTO Usuario (name, lastName, userName, password, email, birthday) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -27,5 +40,48 @@ public class UserRepository {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean ValidateUserRegisterUserName(String userName) {
+        String query = "SELECT 1 FROM Usuario WHERE userName = ? LIMIT 1";
+
+        try (Connection conn = ConnectionDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, userName);
+
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean ValidateUserRegisterEmail(String email) {
+        String query = "SELECT 1 FROM Usuario WHERE email = ? LIMIT 1";
+
+        try (Connection conn = ConnectionDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, email);
+
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean ValidateUserLogIn(TextField userName, PasswordField password) {
+        String query = "SELECT * FROM Usuario WHERE userName = ? AND password = ?";
+
+        try (Connection conn = ConnectionDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, userName.getText());
+            pstmt.setString(2, password.getText());
+            ResultSet rs = pstmt.executeQuery();
+
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
