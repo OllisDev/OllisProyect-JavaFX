@@ -32,24 +32,25 @@ public class MainWindow extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Label lblWelcome = new Label("¡Bienvenido!");
-        lblWelcome.setFont(new Font("Arial", 20));
+
+        Label lblWelcome = new Label("¡Bienvenido a OllisLauncher!");
         lblWelcome.setAlignment(Pos.TOP_CENTER);
 
         Button btnRegister = new Button("Registrarse");
-        btnRegister.setFont(new Font("Arial", 12));
 
         btnRegister.setOnAction(e -> RegisterWindow());
 
         Button btnLogin = new Button("Iniciar sesión");
-        btnLogin.setFont(new Font("Arial", 12));
 
         btnLogin.setOnAction(e -> LogInWindow());
 
         VBox layout = new VBox(15);
+        layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(lblWelcome, btnRegister, btnLogin);
 
         Scene scene = new Scene(layout, 1000, 800);
+        scene.getStylesheets().add(getClass().getResource("styles/mainWindow.css").toExternalForm());
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("OllisLauncher - Menu principal");
         primaryStage.show();
@@ -222,6 +223,7 @@ public class MainWindow extends Application {
         mainLayout.getChildren().addAll(layoutName, layoutLastName, layoutUserName, layoutPassword, layoutEmail, layoutBirthday, layoutButtons);
 
         Scene scene = new Scene(mainLayout, 400, 400);
+        scene.getStylesheets().add(getClass().getResource("styles/registerWindow.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("OllisLauncher - Registrarse");
         stage.showAndWait();

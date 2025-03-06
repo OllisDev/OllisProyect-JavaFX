@@ -1,0 +1,25 @@
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('../fonts/PressStart2P-Regular.ttf');
+}
+.root {
+    -fx-background-color:#070153;
+}
+.label {
+    -fx-font-family: 'Press Start 2P', sans-serif;
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-font-family: 'Press Start 2P', sans-serif;
+    -fx-font-size: 12px;
+    -fx-background-color: #ffcc00;
+    -fx-text-fill: black;
+    -fx-border-color: white;
+    -fx-border-width: 3px;
+}
+
+.button:hover {
+    -fx-background-color: #ff6600; 
+}
