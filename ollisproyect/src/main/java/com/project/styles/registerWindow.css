@@ -9,7 +9,7 @@
 
 .label {
     -fx-font-family: 'Press Start 2P', sans-serif;
-    -fx-font-size: 12px;
+    -fx-font-size: 10px;
     -fx-text-fill: white;
 }
 
@@ -24,4 +24,12 @@
 
 .button:hover {
     -fx-background-color: #ff6600; 
+}
+
+.text-field {
+    -fx-font-family: 'Press Start 2P', sans-serif;
+    -fx-font-size: 10px;
+    -fx-text-fill: black;
+    -fx-border-color: rgb(2, 0, 0);
+    -fx-border-width: 3px;
 }

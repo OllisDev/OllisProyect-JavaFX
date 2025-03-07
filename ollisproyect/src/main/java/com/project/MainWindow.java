@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import com.project.model.User;
 import com.project.repository.UserRepository;
 
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,10 +19,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class MainWindow extends Application {
 
@@ -33,8 +36,7 @@ public class MainWindow extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        Label lblWelcome = new Label("¡Bienvenido a OllisLauncher!");
-        lblWelcome.setAlignment(Pos.TOP_CENTER);
+        Label lblWelcome = new Label("¡Bienvenido a PixelCoins!");
 
         Button btnRegister = new Button("Registrarse");
 
@@ -44,15 +46,32 @@ public class MainWindow extends Application {
 
         btnLogin.setOnAction(e -> LogInWindow());
 
+        Pane background = new Pane();
+        background.setStyle("-fx-background-color:rgb(3, 25, 54);");
+
         VBox layout = new VBox(15);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(lblWelcome, btnRegister, btnLogin);
 
-        Scene scene = new Scene(layout, 1000, 800);
+        StackPane root = new StackPane();
+        root.getChildren().addAll(background, layout);
+
+        Scene scene = new Scene(root, 1000, 800);
         scene.getStylesheets().add(getClass().getResource("styles/mainWindow.css").toExternalForm());
 
+        FadeTransition fade = new FadeTransition(Duration.seconds(3), background);
+        fade.setFromValue(0.3);
+        fade.setToValue(1.0);
+        fade.setCycleCount(Animation.INDEFINITE);
+        fade.setAutoReverse(true);
+        fade.play();
+
+        background.setStyle("-fx-background-color: rgb(16, 1, 44);");
+        fade.setOnFinished(e -> background.setStyle("-fx-background-color: rgb(0, 0, 0);"));
+
         primaryStage.setScene(scene);
-        primaryStage.setTitle("OllisLauncher - Menu principal");
+        primaryStage.setResizable(false);
+        primaryStage.setTitle("PixelCoinsLauncher - Menu principal");
         primaryStage.show();
 
     }
@@ -60,63 +79,63 @@ public class MainWindow extends Application {
     public void RegisterWindow() {
         Stage stage = new Stage();
 
+        Label lblRegister = new Label("REGISTRO");
+        HBox layoutRegister = new HBox(10);
+        layoutRegister.getChildren().addAll(lblRegister);
+        layoutRegister.setAlignment(Pos.TOP_CENTER);
+
         Label lblName = new Label("Nombre:");
-        lblName.setFont(new Font("Arial", 12));
 
         TextField txtName = new TextField();
-        txtName.setFont(new Font("Arial", 12));
 
         Label errorName = createErrorLabel();
 
         HBox layoutName = new HBox(10);
         layoutName.getChildren().addAll(lblName, txtName, errorName);
+        layoutName.setAlignment(Pos.CENTER);
 
         Label lblLastName = new Label("Apellidos:");
-        lblLastName.setFont(new Font("Arial", 12));
 
         TextField txtLastName = new TextField();
-        txtLastName.setFont(new Font("Arial", 12));
 
         Label errorLastName = createErrorLabel();
 
         HBox layoutLastName = new HBox(10);
         layoutLastName.getChildren().addAll(lblLastName, txtLastName, errorLastName);
+        layoutLastName.setAlignment(Pos.CENTER);
 
         Label lblUserName = new Label("Nombre de usuario:");
-        lblUserName.setFont(new Font("Arial", 12));
 
         TextField txtUserName = new TextField();
-        txtUserName.setFont(new Font("Arial", 12));
 
         Label errorUserName = createErrorLabel();
 
         HBox layoutUserName = new HBox(10);
         layoutUserName.getChildren().addAll(lblUserName, txtUserName, errorUserName);
+        layoutUserName.setAlignment(Pos.CENTER);
 
         Label lblPassword = new Label("Contraseña:");
-        lblPassword.setFont(new Font("Arial", 12));
+        ;
 
         PasswordField txtPassword = new PasswordField();
-        txtPassword.setFont(new Font("Arial", 12));
 
         Label errorPassword = createErrorLabel();
 
         HBox layoutPassword = new HBox(10);
         layoutPassword.getChildren().addAll(lblPassword, txtPassword, errorPassword);
+        layoutPassword.setAlignment(Pos.CENTER);
 
         Label lblEmail = new Label("Email:");
-        lblEmail.setFont(new Font("Arial", 12));
 
         TextField txtEmail = new TextField();
-        txtEmail.setFont(new Font("Arial", 12));
 
         Label errorEmail = createErrorLabel();
 
         HBox layoutEmail = new HBox(10);
         layoutEmail.getChildren().addAll(lblEmail, txtEmail, errorEmail);
+        layoutEmail.setAlignment(Pos.CENTER);
 
         Label lblBirthday = new Label("Fecha de nacimiento:");
-        lblBirthday.setFont(new Font("Arial", 12));
 
         DatePicker datePicker = new DatePicker();
 
@@ -124,14 +143,14 @@ public class MainWindow extends Application {
 
         HBox layoutBirthday = new HBox(10);
         layoutBirthday.getChildren().addAll(lblBirthday, datePicker, errorBirthday);
+        layoutBirthday.setAlignment(Pos.CENTER);
 
         Button btnCancel = new Button("Cancelar");
-        btnCancel.setFont(new Font("Arial", 12));
 
         btnCancel.setOnAction(e -> stage.close());
 
         Button btnAccept = new Button("Aceptar");
-        btnAccept.setFont(new Font("Arial", 12));
+
         btnAccept.setOnAction(e -> {
             boolean isValid = true;
 
@@ -218,49 +237,53 @@ public class MainWindow extends Application {
 
         HBox layoutButtons = new HBox(10);
         layoutButtons.getChildren().addAll(btnAccept, btnCancel);
+        layoutButtons.setAlignment(Pos.BOTTOM_CENTER);
 
         VBox mainLayout = new VBox(15);
-        mainLayout.getChildren().addAll(layoutName, layoutLastName, layoutUserName, layoutPassword, layoutEmail, layoutBirthday, layoutButtons);
+        mainLayout.getChildren().addAll(layoutRegister, layoutName, layoutLastName, layoutUserName, layoutPassword, layoutEmail, layoutBirthday, layoutButtons);
+        mainLayout.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(mainLayout, 400, 400);
+        Scene scene = new Scene(mainLayout, 800, 800);
         scene.getStylesheets().add(getClass().getResource("styles/registerWindow.css").toExternalForm());
         stage.setScene(scene);
-        stage.setTitle("OllisLauncher - Registrarse");
+        stage.setTitle("PixelCoinsLauncher - Registrarse");
+        stage.setResizable(false);
         stage.showAndWait();
     }
 
     public void LogInWindow() {
         Stage stage = new Stage();
 
+        Label lblLogIn = new Label("INICIO SESIÓN");
+        HBox layoutLogIn = new HBox(10);
+        layoutLogIn.setAlignment(Pos.TOP_CENTER);
+        layoutLogIn.getChildren().addAll(lblLogIn);
+
         Label lblUserName = new Label("Nombre de usuario:");
-        lblUserName.setFont(new Font("Arial", 12));
 
         TextField txtUserName = new TextField();
-        txtUserName.setFont(new Font("Arial", 12));
 
         Label errorUsername = createErrorLabel();
 
         HBox layoutUserName = new HBox(10);
+        layoutUserName.setAlignment(Pos.CENTER);
         layoutUserName.getChildren().addAll(lblUserName, txtUserName, errorUsername);
 
         Label lblPassword = new Label("Contraseña:");
-        lblPassword.setFont(new Font("Arial", 12));
 
         PasswordField txtPassword = new PasswordField();
-        txtPassword.setFont(new Font("Arial", 12));
 
         Label errorPassword = createErrorLabel();
 
         HBox layoutPassword = new HBox(10);
+        layoutPassword.setAlignment(Pos.CENTER);
         layoutPassword.getChildren().addAll(lblPassword, txtPassword, errorPassword);
 
         Button btnCancel = new Button("Cancelar");
-        btnCancel.setFont(new Font("Arial", 12));
 
         btnCancel.setOnAction(e -> stage.close());
 
         Button btnAccept = new Button("Aceptar");
-        btnAccept.setFont(new Font("Arial", 12));
 
         btnAccept.setOnAction(e -> {
             boolean isValid = true;
@@ -304,21 +327,23 @@ public class MainWindow extends Application {
         });
 
         HBox layoutButtons = new HBox(10);
+        layoutButtons.setAlignment(Pos.BOTTOM_CENTER);
         layoutButtons.getChildren().addAll(btnAccept, btnCancel);
 
         VBox mainLayout = new VBox(15);
-        mainLayout.getChildren().addAll(layoutUserName, layoutPassword, layoutButtons);
+        mainLayout.setAlignment(Pos.CENTER);
+        mainLayout.getChildren().addAll(layoutLogIn, layoutUserName, layoutPassword, layoutButtons);
 
-        Scene scene = new Scene(mainLayout, 600, 800);
+        Scene scene = new Scene(mainLayout, 800, 800);
+        scene.getStylesheets().add(getClass().getResource("styles/loginWindow.css").toExternalForm());
         stage.setScene(scene);
-        stage.setTitle("OllisLauncher - Iniciar sesión");
+        stage.setTitle("PixelCoinsLauncher - Iniciar sesión");
+        stage.setResizable(false);
         stage.showAndWait();
     }
 
     private Label createErrorLabel() {
         Label label = new Label();
-        label.setFont(new Font("Arial", 10));
-        label.setTextFill(Color.RED);
         return label;
     }
 

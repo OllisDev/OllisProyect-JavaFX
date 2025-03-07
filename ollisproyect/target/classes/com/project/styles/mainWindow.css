@@ -2,24 +2,22 @@
     font-family: 'Press Start 2P';
     src: url('../fonts/PressStart2P-Regular.ttf');
 }
-.root {
-    -fx-background-color:#070153;
-}
+
 .label {
     -fx-font-family: 'Press Start 2P', sans-serif;
     -fx-font-size: 20px;
-    -fx-text-fill: white;
+    -fx-text-fill: rgb(0, 255, 34);
 }
 
 .button {
     -fx-font-family: 'Press Start 2P', sans-serif;
     -fx-font-size: 12px;
-    -fx-background-color: #ffcc00;
+    -fx-background-color: #001aff;
     -fx-text-fill: black;
-    -fx-border-color: white;
+    -fx-border-color: rgb(0, 0, 0);
     -fx-border-width: 3px;
 }
 
 .button:hover {
-    -fx-background-color: #ff6600; 
+    -fx-background-color: #ff0000; 
 }
