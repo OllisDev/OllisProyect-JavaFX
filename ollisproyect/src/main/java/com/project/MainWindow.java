@@ -29,8 +29,11 @@ public class MainWindow extends Application {
 
     private UserRepository userRepository;
 
+    private PixelCoinsWindow pixelCoinsWindow;
+
     public MainWindow() {
         this.userRepository = new UserRepository();
+        this.pixelCoinsWindow = new PixelCoinsWindow();
     }
 
     @Override
@@ -315,6 +318,7 @@ public class MainWindow extends Application {
                     alert.setTitle("Información");
                     alert.showAndWait();
                     stage.close();
+                    pixelCoinsWindow.start(stage);
                 } else {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setHeaderText(null);

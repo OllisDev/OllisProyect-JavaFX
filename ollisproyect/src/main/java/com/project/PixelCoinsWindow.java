@@ -36,16 +36,17 @@ public class PixelCoinsWindow extends Application {
         BorderPane mainPane = new BorderPane();
         mainPane.setLeft(leftPane);
 
+        BorderPane rightPane = new BorderPane();
+        rightPane.getStyleClass().add("border-pane2");
+        rightPane.setPrefWidth(400);
+        mainPane.setCenter(rightPane);
+
         Scene scene = new Scene(mainPane, 1080, 920);
         scene.getStylesheets().add(getClass().getResource("styles/pixelCoinsWindow.css").toExternalForm());
         pixelCoinWindow.setScene(scene);
         pixelCoinWindow.setTitle("PixelCoinsLauncher");
         pixelCoinWindow.show();
 
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
 }

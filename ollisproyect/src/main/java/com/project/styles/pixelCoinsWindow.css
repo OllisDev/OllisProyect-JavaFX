@@ -16,10 +16,14 @@
     -fx-background-color: black;
     -fx-pref-width: 250px;
     -fx-pref-height: 600px;
-    -fx-border-color: yellow;
-    -fx-border-width: 3px;
 }
 
 .button:hover {
     -fx-background-color: #ff0000; 
+}
+
+.border-pane2 {
+    -fx-background-color: rgb(2, 2, 92);
+    -fx-pref-width: 450px;
+    -fx-pref-heigh: 1200px;
 }
