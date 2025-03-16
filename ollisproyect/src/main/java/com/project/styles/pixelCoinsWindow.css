@@ -8,12 +8,10 @@
     -fx-font-size: 12px;
     -fx-background-color: #001aff;
     -fx-text-fill: black;
-    -fx-border-color: rgb(0, 0, 0);
-    -fx-border-width: 3px;
 }
 
 .border-pane {
-    -fx-background-color: black;
+    -fx-background-color: rgb(229, 255, 0);
     -fx-pref-width: 250px;
     -fx-pref-height: 600px;
 }

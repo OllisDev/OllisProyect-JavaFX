@@ -2,19 +2,25 @@ package com.project;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class PixelCoinsWindow extends Application {
 
     @Override
     public void start(Stage pixelCoinWindow) {
-        Button btnAccount = new Button("Cuenta");
-        Button btnLaunch = new Button("Lanzador");
-        Button btnShop = new Button("Tienda");
+
+        Button btnAccount = createImageButton("Cuenta", "/com/project/account_pixel.png");
+        Button btnLaunch = createImageButton("Lanzador", "/com/project/rocket_pixel.png");
+        Button btnShop = createImageButton("Tienda", "/com/project/shop_pixel.png");
 
         StackPane topPane = new StackPane(btnAccount);
         StackPane centerPane = new StackPane(btnLaunch);
@@ -47,6 +53,28 @@ public class PixelCoinsWindow extends Application {
         pixelCoinWindow.setTitle("PixelCoinsLauncher");
         pixelCoinWindow.show();
 
+    }
+
+    private Button createImageButton(String text, String imagePath) {
+        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
+        imageView.setFitWidth(50);  // Ajusta el tamaño de la imagen
+        imageView.setFitHeight(50);
+
+        // Crear el texto
+        Label label = new Label(text);
+        label.setStyle("-fx-text-fill: black; -fx-font-size: 12px; -fx-font-family: 'Press Start 2P';");
+
+        // Crear un contenedor VBox con la imagen arriba y el texto abajo
+        VBox vbox = new VBox(imageView, label);
+        vbox.setAlignment(Pos.CENTER); // Asegurar alineación centrada
+        vbox.setSpacing(5); // Espacio entre la imagen y el texto
+
+        // Crear el botón y asignarle el VBox como gráfico
+        Button button = new Button();
+        button.setGraphic(vbox);
+        button.setStyle("-fx-background-color: transparent; -fx-padding: 10px;");
+
+        return button;
     }
 
 }
