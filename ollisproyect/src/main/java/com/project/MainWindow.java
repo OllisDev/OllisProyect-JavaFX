@@ -29,11 +29,18 @@ public class MainWindow extends Application {
 
     private UserRepository userRepository;
 
+    private User currentUser;
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
     private PixelCoinsWindow pixelCoinsWindow;
 
     public MainWindow() {
         this.userRepository = new UserRepository();
-        this.pixelCoinsWindow = new PixelCoinsWindow();
+        this.pixelCoinsWindow = new PixelCoinsWindow(this);
+        this.currentUser = new User();
     }
 
     @Override
@@ -311,7 +318,10 @@ public class MainWindow extends Application {
             if (isValid) {
                 boolean success = userRepository.ValidateUserLogIn(txtUserName, txtPassword);
 
+                User user = userRepository.getUserByUsername(txtUserName.getText());
+
                 if (success) {
+                    currentUser = user;
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setHeaderText(null);
                     alert.setContentText("Inicio de sesión exitoso");

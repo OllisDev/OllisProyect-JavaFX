@@ -84,4 +84,29 @@ public class UserRepository {
         }
         return false;
     }
+
+    public User getUserByUsername(String username) {
+
+        String query = "SELECT * FROM Usuario WHERE userName = ?";
+
+        try (Connection conn = ConnectionDB.getConnection(); PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return new User(
+                        resultSet.getString("name"),
+                        resultSet.getString("lastname"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("email"),
+                        resultSet.getTimestamp("birthday").toLocalDateTime()
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Si no se encuentra el usuario
+    }
+
 }

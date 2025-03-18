@@ -11,6 +11,7 @@ public class User {
     private String password;
     private String email;
     private LocalDateTime birthday;
+    private Long id;
 
     // Constructor por defecto
     public User() {
@@ -75,6 +76,14 @@ public class User {
 
     public void setBirthday(LocalDateTime birthday) {
         this.birthday = birthday;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }
