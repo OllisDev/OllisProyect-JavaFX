@@ -125,14 +125,27 @@ public class MainWindow extends Application {
         layoutUserName.setAlignment(Pos.CENTER);
 
         Label lblPassword = new Label("Contraseña:");
-        ;
 
         PasswordField txtPassword = new PasswordField();
+
+        TextField txtPasswordVisible = new TextField();
+
+        txtPasswordVisible.setManaged(false);
+        txtPasswordVisible.setVisible(false);
+
+        // Sincronización de ambos campos
+        txtPasswordVisible.textProperty().bindBidirectional(txtPassword.textProperty());
+
+        Button btnViewPassword = new Button("👁");
+
+        btnViewPassword.setOnAction(e -> {
+            showDisguisePassword(txtPassword, txtPasswordVisible);
+        });
 
         Label errorPassword = createErrorLabel();
 
         HBox layoutPassword = new HBox(10);
-        layoutPassword.getChildren().addAll(lblPassword, txtPassword, errorPassword);
+        layoutPassword.getChildren().addAll(lblPassword, txtPassword, txtPasswordVisible, btnViewPassword, errorPassword);
         layoutPassword.setAlignment(Pos.CENTER);
 
         Label lblEmail = new Label("Email:");
@@ -283,11 +296,25 @@ public class MainWindow extends Application {
 
         PasswordField txtPassword = new PasswordField();
 
+        TextField txtPasswordVisible = new TextField();
+
+        Button btnViewPassword = new Button("👁");
+
+        txtPasswordVisible.setManaged(false);
+        txtPasswordVisible.setVisible(false);
+
+        // Sincronización de ambos campos
+        txtPasswordVisible.textProperty().bindBidirectional(txtPassword.textProperty());
+
+        btnViewPassword.setOnAction(e -> {
+            showDisguisePassword(txtPassword, txtPasswordVisible);
+        });
+
         Label errorPassword = createErrorLabel();
 
         HBox layoutPassword = new HBox(10);
         layoutPassword.setAlignment(Pos.CENTER);
-        layoutPassword.getChildren().addAll(lblPassword, txtPassword, errorPassword);
+        layoutPassword.getChildren().addAll(lblPassword, txtPassword, txtPasswordVisible, btnViewPassword, errorPassword);
 
         Button btnCancel = new Button("Cancelar");
 
@@ -363,5 +390,21 @@ public class MainWindow extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void showDisguisePassword(PasswordField passwordField, TextField textField) {
+        if (passwordField.isVisible()) {
+            textField.setText(passwordField.getText());
+            textField.setManaged(true);
+            textField.setVisible(true);
+            passwordField.setManaged(false);
+            passwordField.setVisible(false);
+        } else {
+            passwordField.setText(textField.getText());
+            passwordField.setManaged(true);
+            passwordField.setVisible(true);
+            textField.setManaged(false);
+            textField.setVisible(false);
+        }
     }
 }

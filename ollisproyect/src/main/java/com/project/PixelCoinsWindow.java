@@ -122,8 +122,23 @@ public class PixelCoinsWindow extends Application {
         PasswordField txtPassword = new PasswordField();
         txtPassword.setEditable(false);
 
+        TextField txtPasswordVisible = new TextField();
+
+        txtPasswordVisible.setManaged(false);
+        txtPasswordVisible.setVisible(false);
+
+        // Sincronización de ambos campos
+        txtPasswordVisible.textProperty().bindBidirectional(txtPassword.textProperty());
+
+        Button btnViewPassword = new Button("👁");
+        btnViewPassword.getStyleClass().add("button-password");
+
+        btnViewPassword.setOnAction(e -> {
+            showDisguisePassword(txtPassword, txtPasswordVisible);
+        });
+
         HBox layoutPassword = new HBox(10);
-        layoutPassword.getChildren().addAll(lblPassword, txtPassword);
+        layoutPassword.getChildren().addAll(lblPassword, txtPassword, txtPasswordVisible, btnViewPassword);
         layoutPassword.setAlignment(Pos.CENTER);
 
         Label lblEmail = new Label("Email: ");
@@ -162,6 +177,22 @@ public class PixelCoinsWindow extends Application {
             txtName.setText("No hay usuario autenticado");
             txtEmail.setText("");
             txtPassword.setText("");
+        }
+    }
+
+    private void showDisguisePassword(PasswordField passwordField, TextField textField) {
+        if (passwordField.isVisible()) {
+            textField.setText(passwordField.getText());
+            textField.setManaged(true);
+            textField.setVisible(true);
+            passwordField.setManaged(false);
+            passwordField.setVisible(false);
+        } else {
+            passwordField.setText(textField.getText());
+            passwordField.setManaged(true);
+            passwordField.setVisible(true);
+            textField.setManaged(false);
+            textField.setVisible(false);
         }
     }
 

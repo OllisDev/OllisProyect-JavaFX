@@ -40,3 +40,16 @@
     -fx-border-width: 3px;
 }
 
+.button-password {
+    -fx-font-family: 'Press Start 2P', sans-serif;
+    -fx-font-size: 12px;
+    -fx-background-color: #f4f806;
+    -fx-text-fill: black;
+    -fx-border-color: rgb(255, 255, 255);
+    -fx-border-width: 3px;
+}
+
+.button-password:hover {
+    -fx-background-color: #ffae00; 
+}
+
