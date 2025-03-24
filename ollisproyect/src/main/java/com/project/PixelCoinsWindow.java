@@ -1,6 +1,11 @@
 package com.project;
 
+import java.io.File;
+import java.util.List;
+
+import com.project.model.Game;
 import com.project.model.User;
+import com.project.repository.GameRepository;
 import com.project.repository.UserRepository;
 
 import javafx.application.Application;
@@ -8,27 +13,35 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class PixelCoinsWindow extends Application {
 
     private UserRepository userRepository;
 
+    private GameRepository gameRepository;
+
     private MainWindow mainWindow;
 
     public PixelCoinsWindow(MainWindow mainWindow) {
         this.userRepository = new UserRepository();
         this.mainWindow = mainWindow;
+        this.gameRepository = new GameRepository();
 
     }
 
@@ -42,6 +55,7 @@ public class PixelCoinsWindow extends Application {
         Button btnShop = createImageButton("Tienda", "/com/project/shop_pixel.png");
 
         btnAccount.setOnAction(e -> showAccountScene());
+        btnLaunch.setOnAction(e -> showLaunchScene());
 
         setCursorChange(btnAccount);
         setCursorChange(btnLaunch);
@@ -167,6 +181,68 @@ public class PixelCoinsWindow extends Application {
         button.setOnMouseExited(e -> button.setCursor(Cursor.DEFAULT));
     }
 
+    public void showLaunchScene() {
+        Label lblLaunch = new Label("Lanzador");
+        VBox layoutLaunch = new VBox(10);
+
+        layoutLaunch.setAlignment(Pos.TOP_CENTER);
+        layoutLaunch.getChildren().addAll(lblLaunch);
+
+        TableView<Game> table = new TableView<>();
+
+        TableColumn<Game, Long> colId = new TableColumn<>("ID");
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableColumn<Game, String> colName = new TableColumn<>("Nombre");
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<Game, String> colExePath = new TableColumn<>("Ejecutable");
+        colExePath.setCellValueFactory(new PropertyValueFactory<>("exePath"));
+
+        table.getColumns().addAll(colId, colName, colExePath);
+        table.setPrefHeight(300);
+        table.setPrefWidth(100);
+
+        List<Game> games = GameRepository.showListGames();
+
+        table.getItems().addAll(games);
+
+        VBox layoutTable = new VBox(10);
+        layoutTable.getChildren().addAll(table);
+
+        Button btnAddGame = new Button("Añadir juego");
+        Button btnDeleteGame = new Button("Borrar juego");
+        Button btnExecuteGame = new Button("Ejecutar juego");
+
+        btnAddGame.setOnAction(e -> openFileExplorer(table));
+
+        btnDeleteGame.setOnAction(e -> {
+            Game selectedGame = table.getSelectionModel().getSelectedItem();
+            if (selectedGame != null) {
+                gameRepository.deleteListGames(selectedGame);
+                table.getItems().remove(selectedGame);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setContentText("Seleccione un juego para eliminar.");
+                alert.setTitle("Error");
+                alert.showAndWait();
+                alert.close();
+            }
+        });
+
+        HBox layoutButtons = new HBox(10);
+        layoutButtons.setAlignment(Pos.CENTER);
+        layoutButtons.getChildren().addAll(btnAddGame, btnDeleteGame, btnExecuteGame);
+
+        VBox mainLayout = new VBox(10);
+        mainLayout.getChildren().addAll(layoutLaunch, layoutTable, layoutButtons);
+        mainLayout.setAlignment(Pos.CENTER);
+
+        rightPane.setCenter(new StackPane(mainLayout));
+
+    }
+
     public void showUserInfo(TextField txtName, TextField txtEmail, PasswordField txtPassword) {
         if (mainWindow.getCurrentUser() != null) {
             User user = mainWindow.getCurrentUser();
@@ -196,4 +272,39 @@ public class PixelCoinsWindow extends Application {
         }
     }
 
+    private void openFileExplorer(TableView<Game> table) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecciona un archivo ejecutable (.exe)");
+
+        FileChooser.ExtensionFilter exeFilter = new FileChooser.ExtensionFilter("Archivos ejecutables (*.exe)", "*.exe");
+        fileChooser.getExtensionFilters().add(exeFilter);
+
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+        if (selectedFile != null) {
+            String fileName = selectedFile.getName();
+            String filePath = selectedFile.getAbsolutePath();
+
+            // Verificar si el juego ya existe en la tabla
+            boolean existsInTable = table.getItems().stream()
+                    .anyMatch(game -> game.getExePath().equals(filePath));
+
+            // Verificar si el juego ya existe en la base de datos
+            boolean existsInDatabase = GameRepository.showListGames().stream()
+                    .anyMatch(game -> game.getExePath().equals(filePath));
+
+            if (existsInTable || existsInDatabase) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Este juego ya existe en la tabla o en la base de datos.");
+                alert.showAndWait();
+            } else {
+                Game newGame = new Game(fileName, filePath);
+                gameRepository.addListGames(newGame);
+                table.getItems().add(newGame);
+            }
+        }
+
+    }
 }
