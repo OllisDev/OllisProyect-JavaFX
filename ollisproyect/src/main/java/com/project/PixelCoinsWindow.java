@@ -14,7 +14,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
@@ -190,8 +192,8 @@ public class PixelCoinsWindow extends Application {
 
         TableView<Game> table = new TableView<>();
 
-        TableColumn<Game, Long> colId = new TableColumn<>("ID");
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        TableColumn<Game, String> colGenre = new TableColumn<>("Genero");
+        colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
 
         TableColumn<Game, String> colName = new TableColumn<>("Nombre");
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -199,7 +201,7 @@ public class PixelCoinsWindow extends Application {
         TableColumn<Game, String> colExePath = new TableColumn<>("Ejecutable");
         colExePath.setCellValueFactory(new PropertyValueFactory<>("exePath"));
 
-        table.getColumns().addAll(colId, colName, colExePath);
+        table.getColumns().addAll(colGenre, colName, colExePath);
         table.setPrefHeight(300);
         table.setPrefWidth(100);
 
@@ -214,7 +216,10 @@ public class PixelCoinsWindow extends Application {
         Button btnDeleteGame = new Button("Borrar juego");
         Button btnExecuteGame = new Button("Ejecutar juego");
 
-        btnAddGame.setOnAction(e -> openFileExplorer(table));
+        btnAddGame.setOnAction(e -> {
+            RegisterGamesWindow();
+            table.getItems().setAll(GameRepository.showListGames());
+        });
 
         btnDeleteGame.setOnAction(e -> {
             Game selectedGame = table.getSelectionModel().getSelectedItem();
@@ -272,39 +277,107 @@ public class PixelCoinsWindow extends Application {
         }
     }
 
-    private void openFileExplorer(TableView<Game> table) {
+    public void RegisterGamesWindow() {
+        Stage stage = new Stage();
+
+        Label lblName = new Label("Nombre del juego: ");
+
+        TextField txtName = new TextField();
+
+        HBox layoutName = new HBox(10);
+        layoutName.setAlignment(Pos.CENTER);
+        layoutName.getChildren().addAll(lblName, txtName);
+
+        Label lblGenre = new Label("Genero: ");
+
+        ComboBox<String> comboBox = new ComboBox<>();
+        comboBox.getItems().addAll("Aventura", "RPG", "Shooter", "Terror");
+
+        HBox layoutGenre = new HBox(10);
+        layoutGenre.setAlignment(Pos.CENTER);
+        layoutGenre.getChildren().addAll(lblGenre, comboBox);
+
+        Label lblPath = new Label("Ruta del juego: ");
+
+        TextField txtPath = new TextField();
+        txtPath.setEditable(false);
+
+        Button btnBrowse = new Button("Buscar");
+        btnBrowse.setOnAction(e -> openFileExplorer(txtPath));
+
+        HBox layoutPath = new HBox(10);
+        layoutPath.setAlignment(Pos.CENTER);
+        layoutPath.getChildren().addAll(lblPath, txtPath, btnBrowse);
+
+        Button btnAddGame = new Button("Añadir juego");
+        Button btnCancel = new Button("Cancelar");
+
+        btnAddGame.setOnAction(e -> {
+            String gameName = txtName.getText().trim();
+            String genre = comboBox.getValue();
+            String exePath = txtPath.getText().trim();
+
+            if (gameName.isEmpty() || genre == null || exePath.isEmpty()) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Todos los campos deben completarse");
+                alert.showAndWait();
+                return;
+            }
+
+            // Verificar si el juego ya existe en la base de datos o lista
+            List<Game> games = GameRepository.showListGames();
+            boolean exists = games.stream().anyMatch(game -> game.getExePath().equalsIgnoreCase(exePath));
+
+            if (exists) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Este juego ya está en la lista");
+                alert.showAndWait();
+                return;
+            } else {
+                Game newGame = new Game(gameName, genre, exePath);
+                gameRepository.addListGames(newGame);
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Éxito");
+                alert.setHeaderText(null);
+                alert.setContentText("Juego agregado correctamente");
+                alert.showAndWait();
+                stage.close(); // Cierra la ventana de registro
+            }
+        });
+        btnCancel.setOnAction(e -> stage.close());
+
+        HBox layoutButtons = new HBox(10);
+        layoutButtons.setAlignment(Pos.CENTER);
+        layoutButtons.getChildren().addAll(btnAddGame, btnCancel);
+
+        VBox mainLayout = new VBox(10);
+        mainLayout.setAlignment(Pos.CENTER);
+        mainLayout.getChildren().addAll(layoutName, layoutGenre, layoutPath, layoutButtons);
+
+        Scene scene = new Scene(mainLayout, 400, 400);
+        stage.setScene(scene);
+        stage.setTitle("PixelCoinsLauncher - Añadir juego");
+        stage.setResizable(false);
+        stage.showAndWait();
+
+    }
+
+    private void openFileExplorer(TextField txtPath) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecciona un archivo ejecutable (.exe)");
 
         FileChooser.ExtensionFilter exeFilter = new FileChooser.ExtensionFilter("Archivos ejecutables (*.exe)", "*.exe");
         fileChooser.getExtensionFilters().add(exeFilter);
 
+        Stage fileStage = new Stage();
         File selectedFile = fileChooser.showOpenDialog(new Stage());
 
         if (selectedFile != null) {
-            String fileName = selectedFile.getName();
-            String filePath = selectedFile.getAbsolutePath();
-
-            // Verificar si el juego ya existe en la tabla
-            boolean existsInTable = table.getItems().stream()
-                    .anyMatch(game -> game.getExePath().equals(filePath));
-
-            // Verificar si el juego ya existe en la base de datos
-            boolean existsInDatabase = GameRepository.showListGames().stream()
-                    .anyMatch(game -> game.getExePath().equals(filePath));
-
-            if (existsInTable || existsInDatabase) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Este juego ya existe en la tabla o en la base de datos.");
-                alert.showAndWait();
-            } else {
-                Game newGame = new Game(fileName, filePath);
-                gameRepository.addListGames(newGame);
-                table.getItems().add(newGame);
-            }
+            txtPath.setText(selectedFile.getAbsolutePath());
         }
-
     }
 }

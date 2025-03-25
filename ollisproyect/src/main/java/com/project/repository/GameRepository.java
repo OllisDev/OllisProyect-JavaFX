@@ -21,6 +21,7 @@ public class GameRepository {
                 Game game = new Game();
                 game.setId(rs.getLong("id"));      // Asignar correctamente el ID
                 game.setName(rs.getString("name"));
+                game.setGenre(rs.getString("genre"));
                 game.setExePath(rs.getString("exePath"));
                 games.add(game);
             }
@@ -31,10 +32,11 @@ public class GameRepository {
     }
 
     public static void addListGames(Game game) {
-        String query = "INSERT INTO games (name, exePath) VALUES (?, ?)";
+        String query = "INSERT INTO games (name, genre, exePath) VALUES (?, ?, ?)";
         try (Connection conn = ConnectionDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, game.getName());
-            pstmt.setString(2, game.getExePath());
+            pstmt.setString(2, game.getGenre());
+            pstmt.setString(3, game.getExePath());
             pstmt.executeUpdate();
 
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
@@ -67,5 +69,4 @@ public class GameRepository {
             e.printStackTrace();
         }
     }
-
 }

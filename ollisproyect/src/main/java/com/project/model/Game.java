@@ -5,6 +5,7 @@ public class Game {
     // Atributos
     private Long id;
     private String name;
+    private String genre;
     private String exePath;
 
     // Constructor por defecto
@@ -13,8 +14,9 @@ public class Game {
     }
 
     // Constructor parametrizado
-    public Game(String name, String exePath) {
+    public Game(String name, String genre, String exePath) {
         this.name = name;
+        this.genre = genre;
         this.exePath = exePath;
     }
 
@@ -41,6 +43,14 @@ public class Game {
 
     public void setExePath(String exePath) {
         this.exePath = exePath;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
 }
