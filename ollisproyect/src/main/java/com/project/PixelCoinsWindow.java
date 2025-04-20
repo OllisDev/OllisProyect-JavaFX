@@ -1,14 +1,21 @@
 package com.project;
 
 import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.project.model.Game;
 import com.project.model.User;
 import com.project.repository.GameRepository;
-import com.project.repository.UserRepository;
+import com.project.repository.GameSessionRepository;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -16,6 +23,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -34,14 +43,14 @@ import javafx.stage.Stage;
 
 public class PixelCoinsWindow extends Application {
 
-    private UserRepository userRepository;
+    private GameSessionRepository gameSessionRepository;
 
     private GameRepository gameRepository;
 
     private MainWindow mainWindow;
 
     public PixelCoinsWindow(MainWindow mainWindow) {
-        this.userRepository = new UserRepository();
+        this.gameSessionRepository = new GameSessionRepository();
         this.mainWindow = mainWindow;
         this.gameRepository = new GameRepository();
 
@@ -103,7 +112,7 @@ public class PixelCoinsWindow extends Application {
 
         // Crear el texto
         Label label = new Label(text);
-        label.setStyle("-fx-text-fill: black; -fx-font-size: 12px; -fx-border-color: black; -fx-border-width: 5px; -fx-background-color: orange; -fx-font-family: 'Press Start 2P';");
+        label.setStyle("-fx-text-fill: black; -fx-font-size: 12px; -fx-font-family: 'Press Start 2P';");
 
         // Crear un contenedor VBox con la imagen arriba y el texto abajo
         VBox vbox = new VBox(imageView, label);
@@ -216,6 +225,10 @@ public class PixelCoinsWindow extends Application {
         Button btnDeleteGame = new Button("Borrar juego");
         Button btnExecuteGame = new Button("Ejecutar juego");
 
+        btnAddGame.getStyleClass().add("buttons");
+        btnDeleteGame.getStyleClass().add("buttons");
+        btnExecuteGame.getStyleClass().add("buttons");
+
         btnAddGame.setOnAction(e -> {
             RegisterGamesWindow();
             table.getItems().setAll(GameRepository.showListGames());
@@ -235,6 +248,8 @@ public class PixelCoinsWindow extends Application {
                 alert.close();
             }
         });
+
+        btnExecuteGame.setOnAction(e -> executeGame(table));
 
         HBox layoutButtons = new HBox(10);
         layoutButtons.setAlignment(Pos.CENTER);
@@ -291,7 +306,7 @@ public class PixelCoinsWindow extends Application {
         Label lblGenre = new Label("Genero: ");
 
         ComboBox<String> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("Aventura", "RPG", "Shooter", "Terror");
+        comboBox.getItems().addAll("Aventura", "RPG", "Shooter", "Terror", "Plataforma de juegos", "Emulador");
 
         HBox layoutGenre = new HBox(10);
         layoutGenre.setAlignment(Pos.CENTER);
@@ -358,7 +373,8 @@ public class PixelCoinsWindow extends Application {
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.getChildren().addAll(layoutName, layoutGenre, layoutPath, layoutButtons);
 
-        Scene scene = new Scene(mainLayout, 400, 400);
+        Scene scene = new Scene(mainLayout, 600, 600);
+        scene.getStylesheets().add(getClass().getResource("styles/registerGamesWindow.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("PixelCoinsLauncher - Añadir juego");
         stage.setResizable(false);
@@ -379,5 +395,121 @@ public class PixelCoinsWindow extends Application {
         if (selectedFile != null) {
             txtPath.setText(selectedFile.getAbsolutePath());
         }
+    }
+
+    private void executeGame(TableView<Game> table) {
+        System.out.println(mainWindow.getCurrentUser());
+
+        User currentUser = mainWindow.getCurrentUser();
+        Game selectedGame = table.getSelectionModel().getSelectedItem();
+
+        if (currentUser == null || currentUser.getId() == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("No hay usuario autenticado o el ID es nulo.");
+            alert.showAndWait();
+            return;
+        }
+
+        if (selectedGame != null) {
+            try {
+                LocalDateTime startTime = LocalDateTime.now();
+
+                Alert gameAlert = new Alert(AlertType.INFORMATION);
+                gameAlert.setTitle("Juego en ejecución");
+                gameAlert.setHeaderText("Jugando: " + selectedGame.getName());
+
+                Label timeLabel = new Label("Tiempo jugado: 00:00:00");
+                AtomicLong secondsPlayed = new AtomicLong(0);
+
+                Timeline timeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), e -> {
+                    secondsPlayed.incrementAndGet();
+                    long hours = secondsPlayed.get() / 3600;
+                    long minutes = (secondsPlayed.get() % 3600) / 60;
+                    long seconds = secondsPlayed.get() % 60;
+                    timeLabel.setText(String.format("Tiempo jugado: %02d:%02d:%02d", hours, minutes, seconds));
+                }));
+                timeline.setCycleCount(Timeline.INDEFINITE);
+
+                VBox content = new VBox(10, timeLabel);
+                content.setAlignment(Pos.CENTER);
+                gameAlert.getDialogPane().setContent(content);
+
+                ButtonType stopButtonType = new ButtonType("Detener juego", ButtonBar.ButtonData.OK_DONE);
+                gameAlert.getButtonTypes().setAll(stopButtonType);
+
+                ProcessBuilder pb = new ProcessBuilder(selectedGame.getExePath());
+                Process process = pb.start();
+
+                new Thread(() -> {
+                    try {
+                        process.waitFor();
+                        Platform.runLater(() -> {
+                            timeline.stop();
+                            if (gameAlert.isShowing()) {
+                                gameAlert.close();
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+
+                timeline.play();
+                Optional<ButtonType> result = gameAlert.showAndWait();
+
+                if (result.isPresent() || !gameAlert.isShowing()) {
+                    timeline.stop();
+                    process.destroy();
+                    LocalDateTime endTime = LocalDateTime.now();
+                    long totalSeconds = secondsPlayed.get();
+
+                    // Guardar la sesión
+                    gameSessionRepository.saveGameSession(
+                            selectedGame.getId(),
+                            mainWindow.getCurrentUser().getId(),
+                            startTime,
+                            endTime,
+                            totalSeconds
+                    );
+
+                    // Mostrar resumen
+                    showGameSessionSummary(selectedGame, totalSeconds);
+                }
+
+            } catch (IOException e) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setContentText("No se pudo ejecutar el juego.");
+                alert.setTitle("Error");
+                alert.showAndWait();
+            }
+        } else {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setContentText("Selecciona un juego antes de ejecutar");
+            alert.setTitle("Advertencia");
+            alert.showAndWait();
+        }
+    }
+
+    private void showGameSessionSummary(Game game, long totalSeconds) {
+        long hours = totalSeconds / 3600;
+        long minutes = (totalSeconds % 3600) / 60;
+        long seconds = totalSeconds % 60;
+
+        String timePlayed = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        int coinsEarned = (int) (totalSeconds / 60) * 10; // 10 monedas por minuto
+
+        Alert summaryAlert = new Alert(AlertType.INFORMATION);
+        summaryAlert.setTitle("Resumen de juego");
+        summaryAlert.setHeaderText("Sesión terminada: " + game.getName());
+        summaryAlert.setContentText(String.format(
+                "Tiempo jugado: %s\n"
+                + "Monedas ganadas: %d",
+                timePlayed, coinsEarned
+        ));
+        summaryAlert.showAndWait();
     }
 }

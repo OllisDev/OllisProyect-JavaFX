@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import com.project.model.User;
 import com.project.repository.UserRepository;
 
-import javafx.animation.Animation;
-import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,7 +21,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class MainWindow extends Application {
 
@@ -32,7 +29,11 @@ public class MainWindow extends Application {
     private User currentUser;
 
     public User getCurrentUser() {
-        return currentUser;
+        return this.currentUser;
+    }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
     }
 
     private PixelCoinsWindow pixelCoinsWindow;
@@ -57,7 +58,7 @@ public class MainWindow extends Application {
         btnLogin.setOnAction(e -> LogInWindow());
 
         Pane background = new Pane();
-        background.setStyle("-fx-background-color:rgb(3, 25, 54);");
+        background.setStyle("-fx-background-color:rgb(54, 54, 54);");
 
         VBox layout = new VBox(15);
         layout.setAlignment(Pos.CENTER);
@@ -68,16 +69,6 @@ public class MainWindow extends Application {
 
         Scene scene = new Scene(root, 1000, 800);
         scene.getStylesheets().add(getClass().getResource("styles/mainWindow.css").toExternalForm());
-
-        FadeTransition fade = new FadeTransition(Duration.seconds(3), background);
-        fade.setFromValue(0.3);
-        fade.setToValue(1.0);
-        fade.setCycleCount(Animation.INDEFINITE);
-        fade.setAutoReverse(true);
-        fade.play();
-
-        background.setStyle("-fx-background-color: rgb(16, 1, 44);");
-        fade.setOnFinished(e -> background.setStyle("-fx-background-color: rgb(0, 0, 0);"));
 
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -345,17 +336,23 @@ public class MainWindow extends Application {
             if (isValid) {
                 boolean success = userRepository.ValidateUserLogIn(txtUserName, txtPassword);
 
-                User user = userRepository.getUserByUsername(txtUserName.getText());
-
                 if (success) {
-                    currentUser = user;
+                    User user = userRepository.getUserByUsername(txtUserName.getText());
+
+                    if (user != null) {
+                        this.setCurrentUser(user);
+                    }
+
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.setHeaderText(null);
                     alert.setContentText("Inicio de sesión exitoso");
                     alert.setTitle("Información");
                     alert.showAndWait();
                     stage.close();
-                    pixelCoinsWindow.start(stage);
+
+                    PixelCoinsWindow pixelCoinsWindow = new PixelCoinsWindow(this);
+                    Stage pStage = new Stage();
+                    pixelCoinsWindow.start(pStage);
                 } else {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setHeaderText(null);

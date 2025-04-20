@@ -26,7 +26,17 @@ public class User {
         this.password = password;
         this.email = email;
         this.birthday = birthday;
+    }
 
+    // Constructor parametrizado (con ID)
+    public User(Long id, String name, String lastName, String userName, String password, String email, LocalDateTime birthday) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+        this.birthday = birthday;
     }
 
     // GETTERS / SETTERS
@@ -84,6 +94,21 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("User{");
+        sb.append("name=").append(name);
+        sb.append(", lastName=").append(lastName);
+        sb.append(", userName=").append(userName);
+        sb.append(", password=").append(password);
+        sb.append(", email=").append(email);
+        sb.append(", birthday=").append(birthday);
+        sb.append(", id=").append(id);
+        sb.append('}');
+        return sb.toString();
     }
 
 }

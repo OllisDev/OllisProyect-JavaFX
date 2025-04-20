@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.project.model.User;
 
@@ -24,7 +25,7 @@ public class UserRepository {
         }
         String query = "INSERT INTO Usuario (name, lastName, userName, password, email, birthday) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = ConnectionDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+        try (Connection conn = ConnectionDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, user.getName());
             pstmt.setString(2, user.getLastName());
@@ -34,12 +35,25 @@ public class UserRepository {
             pstmt.setObject(6, user.getBirthday());
 
             int rows = pstmt.executeUpdate();
-            return rows > 0;
+
+            if (rows == 0) {
+                return false;
+            }
+
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+
+                    Long generatedId = generatedKeys.getLong(1);
+                    user.setId(generatedId);
+                    return true;
+                }
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+
         }
+        return false;
     }
 
     public boolean ValidateUserRegisterUserName(String userName) {
@@ -95,6 +109,7 @@ public class UserRepository {
 
             if (resultSet.next()) {
                 return new User(
+                        resultSet.getLong("id"),
                         resultSet.getString("name"),
                         resultSet.getString("lastname"),
                         resultSet.getString("username"),
