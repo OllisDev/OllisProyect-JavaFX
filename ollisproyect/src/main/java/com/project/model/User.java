@@ -12,6 +12,7 @@ public class User {
     private String email;
     private LocalDateTime birthday;
     private Long id;
+    private int balance;
 
     // Constructor por defecto
     public User() {
@@ -37,6 +38,18 @@ public class User {
         this.password = password;
         this.email = email;
         this.birthday = birthday;
+    }
+
+    // Constructor parametrizado (con las monedas)
+    public User(Long id, String name, String lastName, String userName, String password, String email, LocalDateTime birthday, int balance) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+        this.birthday = birthday;
+        this.balance = balance;
     }
 
     // GETTERS / SETTERS
@@ -94,6 +107,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
     @Override

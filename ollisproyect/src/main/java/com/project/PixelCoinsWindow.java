@@ -67,6 +67,7 @@ public class PixelCoinsWindow extends Application {
 
         btnAccount.setOnAction(e -> showAccountScene());
         btnLaunch.setOnAction(e -> showLaunchScene());
+        btnShop.setOnAction(e -> showShopScene());
 
         setCursorChange(btnAccount);
         setCursorChange(btnLaunch);
@@ -261,6 +262,36 @@ public class PixelCoinsWindow extends Application {
 
         rightPane.setCenter(new StackPane(mainLayout));
 
+    }
+
+    private void showShopScene() {
+        Label lblShop = new Label("Tienda");
+        VBox layoutShop = new VBox(10);
+
+        layoutShop.setAlignment(Pos.TOP_CENTER);
+        layoutShop.getChildren().addAll(lblShop);
+
+        User currentUser = mainWindow.getCurrentUser();
+
+        Label lblBalance = new Label("Monedas: " + currentUser.getBalance());
+        lblBalance.setStyle("-fx-font-size: 10px; -fx-font-family: 'Press Start 2P';");
+
+        VBox layoutBalance = new VBox(10);
+        layoutBalance.setAlignment(Pos.TOP_RIGHT);
+        layoutBalance.getChildren().add(lblBalance);
+
+        Label lblCommingSoon = new Label("Proximamente productos en la tienda...");
+        lblCommingSoon.setStyle("-fx-font-size: 10px; -fx-font-family: 'Press Start 2P'; -fx-text-fill: red;");
+
+        VBox layoutCommingSoon = new VBox(10);
+        layoutCommingSoon.setAlignment(Pos.CENTER);
+        layoutCommingSoon.getChildren().add(lblCommingSoon);
+
+        VBox mainLayout = new VBox(10);
+        mainLayout.getChildren().addAll(layoutShop, layoutBalance, layoutCommingSoon);
+        mainLayout.setAlignment(Pos.CENTER);
+
+        rightPane.setCenter(new StackPane(mainLayout));
     }
 
     public void showUserInfo(TextField txtName, TextField txtEmail, PasswordField txtPassword) {
