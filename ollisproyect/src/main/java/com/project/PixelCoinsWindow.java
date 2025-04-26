@@ -11,6 +11,9 @@ import com.project.model.Game;
 import com.project.model.User;
 import com.project.repository.GameRepository;
 import com.project.repository.GameSessionRepository;
+import com.project.repository.UserRepository;
+import com.project.utils.GlobalMouseListener;
+import com.project.utils.WindowsChecker;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -43,7 +46,15 @@ import javafx.stage.Stage;
 
 public class PixelCoinsWindow extends Application {
 
+    private GlobalMouseListener mouseListener;
+
+    private String windowTittle;
+
+    private boolean active = true;
+
     private GameSessionRepository gameSessionRepository;
+
+    private UserRepository userRepository;
 
     private GameRepository gameRepository;
 
@@ -53,6 +64,7 @@ public class PixelCoinsWindow extends Application {
         this.gameSessionRepository = new GameSessionRepository();
         this.mainWindow = mainWindow;
         this.gameRepository = new GameRepository();
+        this.userRepository = new UserRepository();
 
     }
 
@@ -100,10 +112,10 @@ public class PixelCoinsWindow extends Application {
 
         Scene scene = new Scene(mainPane, 1080, 920);
         scene.getStylesheets().add(getClass().getResource("styles/pixelCoinsWindow.css").toExternalForm());
+
         pixelCoinWindow.setScene(scene);
         pixelCoinWindow.setTitle("PixelCoinsLauncher");
         pixelCoinWindow.show();
-
     }
 
     private Button createImageButton(String text, String imagePath) {
@@ -250,7 +262,9 @@ public class PixelCoinsWindow extends Application {
             }
         });
 
-        btnExecuteGame.setOnAction(e -> executeGame(table));
+        btnExecuteGame.setOnAction(e -> {
+            executeGame(table);
+        });
 
         HBox layoutButtons = new HBox(10);
         layoutButtons.setAlignment(Pos.CENTER);
@@ -272,8 +286,9 @@ public class PixelCoinsWindow extends Application {
         layoutShop.getChildren().addAll(lblShop);
 
         User currentUser = mainWindow.getCurrentUser();
+        int balance = userRepository.showCoins(currentUser.getUserName());
+        Label lblBalance = new Label("Monedas: " + balance);
 
-        Label lblBalance = new Label("Monedas: " + currentUser.getBalance());
         lblBalance.setStyle("-fx-font-size: 10px; -fx-font-family: 'Press Start 2P';");
 
         VBox layoutBalance = new VBox(10);
@@ -448,6 +463,9 @@ public class PixelCoinsWindow extends Application {
                 LocalDateTime startTime = LocalDateTime.now();
 
                 Alert gameAlert = new Alert(AlertType.INFORMATION);
+                gameAlert.setResizable(true);
+                gameAlert.setWidth(500);
+                gameAlert.setHeight(500);
                 gameAlert.setTitle("Juego en ejecución");
                 gameAlert.setHeaderText("Jugando: " + selectedGame.getName());
 
@@ -459,7 +477,10 @@ public class PixelCoinsWindow extends Application {
                     long hours = secondsPlayed.get() / 3600;
                     long minutes = (secondsPlayed.get() % 3600) / 60;
                     long seconds = secondsPlayed.get() % 60;
-                    timeLabel.setText(String.format("Tiempo jugado: %02d:%02d:%02d", hours, minutes, seconds));
+                    windowTittle = WindowsChecker.GetActiveWindowTitle();
+                    // Comprobar si la ventana está activa
+                    boolean isWindowActive = mouseListener.isWindowActive();
+                    timeLabel.setText(String.format("Tiempo jugado: %02d:%02d:%02d\nVentana activa: %s", hours, minutes, seconds, windowTittle));
                 }));
                 timeline.setCycleCount(Timeline.INDEFINITE);
 
@@ -475,6 +496,8 @@ public class PixelCoinsWindow extends Application {
 
                 new Thread(() -> {
                     try {
+                        // Crear una instancia de GlobalMouseListener con el título de la ventana principal
+                        mouseListener = new GlobalMouseListener(WindowsChecker.GetActiveWindowTitle());
                         process.waitFor();
                         Platform.runLater(() -> {
                             timeline.stop();

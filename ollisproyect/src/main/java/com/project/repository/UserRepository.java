@@ -124,4 +124,19 @@ public class UserRepository {
         return null; // Si no se encuentra el usuario
     }
 
+    public int showCoins(String username) {
+        String query = "SELECT balance FROM Usuario Where userName = ?";
+        try (Connection conn = ConnectionDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("balance");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 }
