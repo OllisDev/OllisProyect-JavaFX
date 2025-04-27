@@ -1,11 +1,11 @@
 package com.project.utils;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseInputListener;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class GlobalMouseListener implements NativeMouseInputListener {
 
@@ -25,7 +25,7 @@ public class GlobalMouseListener implements NativeMouseInputListener {
 
             // Registrar el hook global
             GlobalScreen.registerNativeHook();
-            GlobalScreen.addNativeMouseListener(this);
+            GlobalScreen.getInstance().addNativeMouseListener(this);
             //GlobalScreen.addNativeMouseMotionListener(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,19 +55,16 @@ public class GlobalMouseListener implements NativeMouseInputListener {
 
     @Override
     public void nativeMousePressed(NativeMouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'nativeMousePressed'");
+        checkActiveWindow();
     }
 
     @Override
     public void nativeMouseReleased(NativeMouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'nativeMouseReleased'");
+        checkActiveWindow();
     }
 
     @Override
     public void nativeMouseDragged(NativeMouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'nativeMouseDragged'");
+        checkActiveWindow();
     }
 }
