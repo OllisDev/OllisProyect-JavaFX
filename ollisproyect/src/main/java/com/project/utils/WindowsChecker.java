@@ -18,6 +18,15 @@ public class WindowsChecker {
         return Native.toString(windowText);
     }
 
+    // Método estático para comprobar si una ventana específica está activa
+    public static boolean isWindowActive(String windowName) {
+        String activeWindowTitle = GetActiveWindowTitle();
+        if (activeWindowTitle == null) {
+            return false;
+        }
+        return activeWindowTitle.equalsIgnoreCase(windowName);
+    }
+
     public static void main(String[] args) {
         // Llamar al método estático y mostrar el título de la ventana activa
         String activeWindowTitle = WindowsChecker.GetActiveWindowTitle();

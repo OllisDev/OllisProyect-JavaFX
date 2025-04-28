@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.jnativehook.GlobalScreen;
+
 import com.project.model.Game;
 import com.project.model.User;
 import com.project.repository.GameRepository;
@@ -49,6 +51,10 @@ public class PixelCoinsWindow extends Application {
     private GlobalMouseListener mouseListener;
 
     private String windowTittle;
+
+    private AtomicLong lastActivityTime = new AtomicLong(System.currentTimeMillis());
+
+    private Timeline antiAfkTimeline;
 
     private boolean active = true;
 
@@ -477,12 +483,21 @@ public class PixelCoinsWindow extends Application {
                     long hours = secondsPlayed.get() / 3600;
                     long minutes = (secondsPlayed.get() % 3600) / 60;
                     long seconds = secondsPlayed.get() % 60;
-                    windowTittle = WindowsChecker.GetActiveWindowTitle();
                     // Comprobar si la ventana está activa
                     boolean isWindowActive = mouseListener.isWindowActive();
                     timeLabel.setText(String.format("Tiempo jugado: %02d:%02d:%02d\nVentana activa: %s", hours, minutes, seconds, windowTittle));
                 }));
                 timeline.setCycleCount(Timeline.INDEFINITE);
+
+                ProcessBuilder pb = new ProcessBuilder(selectedGame.getExePath());
+                Process process = pb.start();
+
+                Thread.sleep(2000);
+
+                windowTittle = WindowsChecker.GetActiveWindowTitle();
+                System.out.println("[Debug]: Título de la ventana del juego: " + windowTittle);
+
+                afkSystem(timeline);
 
                 VBox content = new VBox(10, timeLabel);
                 content.setAlignment(Pos.CENTER);
@@ -491,13 +506,12 @@ public class PixelCoinsWindow extends Application {
                 ButtonType stopButtonType = new ButtonType("Detener juego", ButtonBar.ButtonData.OK_DONE);
                 gameAlert.getButtonTypes().setAll(stopButtonType);
 
-                ProcessBuilder pb = new ProcessBuilder(selectedGame.getExePath());
-                Process process = pb.start();
-
                 new Thread(() -> {
                     try {
                         // Crear una instancia de GlobalMouseListener con el título de la ventana principal
-                        mouseListener = new GlobalMouseListener(WindowsChecker.GetActiveWindowTitle());
+                        mouseListener = new GlobalMouseListener(WindowsChecker.GetActiveWindowTitle(), () -> {
+                            lastActivityTime.set(System.currentTimeMillis());
+                        });
                         process.waitFor();
                         Platform.runLater(() -> {
                             timeline.stop();
@@ -505,6 +519,11 @@ public class PixelCoinsWindow extends Application {
                                 gameAlert.close();
                             }
                         });
+                        try {
+                            GlobalScreen.unregisterNativeHook();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -532,7 +551,7 @@ public class PixelCoinsWindow extends Application {
                     showGameSessionSummary(selectedGame, totalSeconds);
                 }
 
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setHeaderText(null);
                 alert.setContentText("No se pudo ejecutar el juego.");
@@ -566,4 +585,45 @@ public class PixelCoinsWindow extends Application {
         ));
         summaryAlert.showAndWait();
     }
+
+    private void afkSystem(Timeline timeline) {
+        // Bandera para controlar si el temporizador ya está en pausa
+        boolean[] isGamePaused = {false};
+
+        if (windowTittle == null || windowTittle.isEmpty()) {
+            throw new IllegalArgumentException("El título de la ventana no puede ser nulo o vacío.");
+        }
+
+        antiAfkTimeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), event -> {
+            boolean isWindowActive = WindowsChecker.isWindowActive(windowTittle);
+            long currentTime = System.currentTimeMillis();
+            long inactivityTime = currentTime - lastActivityTime.get();
+
+            // Verificamos si la ventana no está activa o si ha pasado el tiempo de inactividad
+            if (!isWindowActive || inactivityTime > 60000) {
+                if (timeline.getStatus() == Timeline.Status.RUNNING && !isGamePaused[0]) {
+                    // Pausamos el juego solo si no está en pausa
+                    timeline.pause();
+                    isGamePaused[0] = true;  // Actualizamos el estado a "pausado"
+                    System.out.println("[Anti-AFK]: Juego pausado por inactividad o ventana no activa.");
+                }
+            } else {
+                if (timeline.getStatus() == Timeline.Status.PAUSED && isGamePaused[0]) {
+                    // Reanudamos el juego solo si estaba en pausa
+                    timeline.play();
+                    isGamePaused[0] = false;  // Actualizamos el estado a "jugando"
+                    System.out.println("[Anti-AFK]: Juego reanudado.");
+                }
+            }
+        }));
+
+        antiAfkTimeline.setCycleCount(Timeline.INDEFINITE);
+        antiAfkTimeline.play();
+
+        // Listener de mouse para actualizar el tiempo de actividad
+        mouseListener = new GlobalMouseListener(windowTittle, () -> {
+            lastActivityTime.set(System.currentTimeMillis());
+        });
+    }
+
 }
