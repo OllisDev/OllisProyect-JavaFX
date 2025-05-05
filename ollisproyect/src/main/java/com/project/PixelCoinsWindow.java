@@ -46,11 +46,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Clase principal de la ventana PixelCoinsLauncher. Gestiona las
+ * funcionalidades principales de la aplicación, como la ejecución de juegos, la
+ * gestión de usuarios, y el sistema anti-AFK.
+ */
 public class PixelCoinsWindow extends Application {
 
     private GlobalMouseListener mouseListener;
 
-    private String windowTittle;
+    public String windowTittle;
 
     private AtomicLong lastActivityTime = new AtomicLong(System.currentTimeMillis());
 
@@ -58,14 +63,20 @@ public class PixelCoinsWindow extends Application {
 
     private boolean active = true;
 
-    private GameSessionRepository gameSessionRepository;
+    public GameSessionRepository gameSessionRepository;
 
-    private UserRepository userRepository;
+    public UserRepository userRepository;
 
-    private GameRepository gameRepository;
+    public GameRepository gameRepository;
 
-    private MainWindow mainWindow;
+    public MainWindow mainWindow;
 
+    /**
+     * Constructor de la clase PixelCoinsWindow. Inicializa los repositorios y
+     * la referencia a la ventana principal.
+     *
+     * @param mainWindow La ventana principal de la aplicación.
+     */
     public PixelCoinsWindow(MainWindow mainWindow) {
         this.gameSessionRepository = new GameSessionRepository();
         this.mainWindow = mainWindow;
@@ -76,6 +87,12 @@ public class PixelCoinsWindow extends Application {
 
     private BorderPane rightPane;
 
+    /**
+     * Método principal de inicio de la ventana PixelCoinsLauncher. Configura y
+     * muestra la interfaz principal de la aplicación.
+     *
+     * @param pixelCoinWindow El escenario principal de la ventana.
+     */
     @Override
     public void start(Stage pixelCoinWindow) {
 
@@ -124,6 +141,13 @@ public class PixelCoinsWindow extends Application {
         pixelCoinWindow.show();
     }
 
+    /**
+     * Crea un botón con una imagen y texto.
+     *
+     * @param text El texto del botón.
+     * @param imagePath La ruta de la imagen del botón.
+     * @return Un botón configurado con la imagen y el texto.
+     */
     private Button createImageButton(String text, String imagePath) {
         ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(imagePath)));
         imageView.setFitWidth(50);  // Ajusta el tamaño de la imagen
@@ -146,6 +170,10 @@ public class PixelCoinsWindow extends Application {
         return button;
     }
 
+    /**
+     * Muestra la escena de la cuenta del usuario. Permite visualizar
+     * información del usuario autenticado.
+     */
     public void showAccountScene() {
 
         Label lblAccount = new Label("Cuenta");
@@ -206,11 +234,20 @@ public class PixelCoinsWindow extends Application {
         rightPane.setCenter(new StackPane(mainLayout));
     }
 
+    /**
+     * Cambia el cursor al pasar el ratón sobre un botón.
+     *
+     * @param button El botón al que se aplicará el cambio de cursor.
+     */
     private void setCursorChange(Button button) {
         button.setOnMouseEntered(e -> button.setCursor(Cursor.HAND));
         button.setOnMouseExited(e -> button.setCursor(Cursor.DEFAULT));
     }
 
+    /**
+     * Muestra la escena del lanzador de juegos. Permite gestionar y ejecutar
+     * juegos desde la aplicación.
+     */
     public void showLaunchScene() {
         Label lblLaunch = new Label("Lanzador");
         VBox layoutLaunch = new VBox(10);
@@ -284,6 +321,10 @@ public class PixelCoinsWindow extends Application {
 
     }
 
+    /**
+     * Muestra la escena de la tienda. Permite visualizar el saldo de monedas
+     * del usuario y productos disponibles.
+     */
     private void showShopScene() {
         Label lblShop = new Label("Tienda");
         VBox layoutShop = new VBox(10);
@@ -315,6 +356,13 @@ public class PixelCoinsWindow extends Application {
         rightPane.setCenter(new StackPane(mainLayout));
     }
 
+    /**
+     * Muestra la información del usuario autenticado.
+     *
+     * @param txtName Campo de texto para el nombre de usuario.
+     * @param txtEmail Campo de texto para el email del usuario.
+     * @param txtPassword Campo de texto para la contraseña del usuario.
+     */
     public void showUserInfo(TextField txtName, TextField txtEmail, PasswordField txtPassword) {
         if (mainWindow.getCurrentUser() != null) {
             User user = mainWindow.getCurrentUser();
@@ -328,6 +376,12 @@ public class PixelCoinsWindow extends Application {
         }
     }
 
+    /**
+     * Alterna entre mostrar y ocultar la contraseña.
+     *
+     * @param passwordField El campo de contraseña.
+     * @param textField El campo de texto visible.
+     */
     private void showDisguisePassword(PasswordField passwordField, TextField textField) {
         if (passwordField.isVisible()) {
             textField.setText(passwordField.getText());
@@ -344,6 +398,10 @@ public class PixelCoinsWindow extends Application {
         }
     }
 
+    /**
+     * Muestra la ventana para registrar un nuevo juego. Permite al usuario
+     * agregar un juego a la lista de juegos disponibles.
+     */
     public void RegisterGamesWindow() {
         Stage stage = new Stage();
 
@@ -434,6 +492,11 @@ public class PixelCoinsWindow extends Application {
 
     }
 
+    /**
+     * Abre un explorador de archivos para seleccionar un archivo ejecutable.
+     *
+     * @param txtPath Campo de texto donde se mostrará la ruta seleccionada.
+     */
     private void openFileExplorer(TextField txtPath) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecciona un archivo ejecutable (.exe)");
@@ -449,7 +512,13 @@ public class PixelCoinsWindow extends Application {
         }
     }
 
-    private void executeGame(TableView<Game> table) {
+    /**
+     * Ejecuta un juego seleccionado desde la lista. Inicia el proceso del juego
+     * y muestra un temporizador de tiempo jugado.
+     *
+     * @param table La tabla que contiene la lista de juegos.
+     */
+    public void executeGame(TableView<Game> table) {
         System.out.println(mainWindow.getCurrentUser());
 
         User currentUser = mainWindow.getCurrentUser();
@@ -567,6 +636,13 @@ public class PixelCoinsWindow extends Application {
         }
     }
 
+    /**
+     * Muestra un resumen de la sesión de juego. Incluye el tiempo jugado y las
+     * monedas ganadas.
+     *
+     * @param game El juego jugado.
+     * @param totalSeconds El tiempo total jugado en segundos.
+     */
     private void showGameSessionSummary(Game game, long totalSeconds) {
         long hours = totalSeconds / 3600;
         long minutes = (totalSeconds % 3600) / 60;
@@ -586,7 +662,13 @@ public class PixelCoinsWindow extends Application {
         summaryAlert.showAndWait();
     }
 
-    private void afkSystem(Timeline timeline) {
+    /**
+     * Sistema anti-AFK que pausa el juego si no hay actividad o si la ventana
+     * no está activa.
+     *
+     * @param timeline El temporizador del juego.
+     */
+    public void afkSystem(Timeline timeline) {
         // Bandera para controlar si el temporizador ya está en pausa
         boolean[] isGamePaused = {false};
 

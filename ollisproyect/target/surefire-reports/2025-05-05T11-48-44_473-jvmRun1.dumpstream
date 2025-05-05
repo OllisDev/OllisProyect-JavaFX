@@ -1,0 +1,66 @@
+# Created at 2025-05-05T11:48:57.842
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'JNI_OnLoad(): GetEnv() successful.'.
+
+# Created at 2025-05-05T11:48:57.847
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'RefreshLocaleList(): Received 1 locales.'.
+
+# Created at 2025-05-05T11:48:57.851
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'RefreshLocaleList(): Loading layout for 0x00000000040A0C0A: KBDSP.DLL.'.
+
+# Created at 2025-05-05T11:48:57.854
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'LoadUnicodeHelper(): RefreshLocaleList found 1.'.
+
+# Created at 2025-05-05T11:48:57.859
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'GetAutoRepeatRate(): successful. (rate: 31)'.
+
+# Created at 2025-05-05T11:48:57.862
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'GetAutoRepeatDelay(): successful. (delay: 1)'.
+
+# Created at 2025-05-05T11:48:57.864
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'GetPointerAccelerationMultiplier(): successful. (multiplier: 0)'.
+
+# Created at 2025-05-05T11:48:57.867
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'GetPointerAccelerationThreshold(): successful. (threshold: 0)'.
+
+# Created at 2025-05-05T11:48:57.870
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'GetPointerSensitivity(): successful. (sensitivity: 10)'.
+
+# Created at 2025-05-05T11:48:57.873
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'GetMultiClickTime(): successful. (time: 500)'.
+
+# Created at 2025-05-05T11:48:57.876
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'JNI_Load(): JNI Loaded.'.
+
+# Created at 2025-05-05T11:48:57.880
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'IsNativeThreadRunning(): State (0)'.
+
+# Created at 2025-05-05T11:48:57.883
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'StartNativeThread(): start successful.'.
+
+# Created at 2025-05-05T11:48:57.886
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'ThreadProc(): SetWindowsHookEx() successful.'.
+
+# Created at 2025-05-05T11:48:57.888
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'ThreadStartCallback(): Attached to JVM successful.'.
+
+# Created at 2025-05-05T11:48:57.892
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'ThreadStartCallback(): Detach from JVM successful.'.
+
+# Created at 2025-05-05T11:48:57.895
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'IsNativeThreadRunning(): State (1)'.
+
+# Created at 2025-05-05T11:48:57.897
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'StartNativeThread(): initialization successful.'.
+
+# Created at 2025-05-05T11:48:57.897
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'IsNativeThreadRunning(): State (1)'.
+
+# Created at 2025-05-05T11:48:57.900
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'IsNativeThreadRunning(): State (1)'.
+
+# Created at 2025-05-05T11:48:57.902
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'ThreadProc(): complete.'.
+
+# Created at 2025-05-05T11:48:57.981
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'StopNativeThread(): Thread Result (0)'.
+

@@ -22,28 +22,53 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Clase principal de la aplicación PixelCoinsLauncher. Representa la ventana
+ * principal del programa y gestiona las acciones relacionadas con el registro e
+ * inicio de sesión de usuarios.
+ */
 public class MainWindow extends Application {
 
     private UserRepository userRepository;
 
     private User currentUser;
 
+    /**
+     * Obtiene el usuario actualmente autenticado.
+     *
+     * @return El usuario actual.
+     */
     public User getCurrentUser() {
         return this.currentUser;
     }
 
+    /**
+     * Establece el usuario actualmente autenticado.
+     *
+     * @param user El usuario a establecer como actual.
+     */
     public void setCurrentUser(User user) {
         this.currentUser = user;
     }
 
     private PixelCoinsWindow pixelCoinsWindow;
 
+    /**
+     * Constructor de la clase MainWindow. Inicializa el repositorio de
+     * usuarios, la ventana de PixelCoins y el usuario actual.
+     */
     public MainWindow() {
         this.userRepository = new UserRepository();
         this.pixelCoinsWindow = new PixelCoinsWindow(this);
         this.currentUser = new User();
     }
 
+    /**
+     * Método principal de inicio de la aplicación. Configura y muestra la
+     * ventana principal.
+     *
+     * @param primaryStage El escenario principal de la aplicación.
+     */
     @Override
     public void start(Stage primaryStage) {
 
@@ -77,6 +102,10 @@ public class MainWindow extends Application {
 
     }
 
+    /**
+     * Muestra la ventana de registro de usuarios. Permite al usuario ingresar
+     * sus datos para registrarse en el sistema.
+     */
     public void RegisterWindow() {
         Stage stage = new Stage();
 
@@ -265,6 +294,10 @@ public class MainWindow extends Application {
         stage.showAndWait();
     }
 
+    /**
+     * Muestra la ventana de inicio de sesión. Permite al usuario ingresar sus
+     * credenciales para acceder al sistema.
+     */
     public void LogInWindow() {
         Stage stage = new Stage();
 
@@ -380,15 +413,22 @@ public class MainWindow extends Application {
         stage.showAndWait();
     }
 
+    /**
+     * Crea un Label para mostrar mensajes de error.
+     *
+     * @return Un Label vacío para mensajes de error.
+     */
     private Label createErrorLabel() {
         Label label = new Label();
         return label;
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
+    /**
+     * Alterna entre mostrar y ocultar la contraseña.
+     *
+     * @param passwordField El campo de contraseña.
+     * @param textField El campo de texto visible.
+     */
     private void showDisguisePassword(PasswordField passwordField, TextField textField) {
         if (passwordField.isVisible()) {
             textField.setText(passwordField.getText());
@@ -403,5 +443,14 @@ public class MainWindow extends Application {
             textField.setManaged(false);
             textField.setVisible(false);
         }
+    }
+
+    /**
+     * Método principal para iniciar la aplicación.
+     *
+     * @param args Argumentos de la línea de comandos.
+     */
+    public static void main(String[] args) {
+        launch(args);
     }
 }

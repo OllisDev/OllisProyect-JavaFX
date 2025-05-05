@@ -20,6 +20,13 @@ public class Game {
         this.exePath = exePath;
     }
 
+    public Game(Long id, String name, String genre, String exePath) {
+        this.id = id;
+        this.name = name;
+        this.genre = genre;
+        this.exePath = exePath;
+    }
+
     // GETTERS / SETTERS
     public Long getId() {
         return id;

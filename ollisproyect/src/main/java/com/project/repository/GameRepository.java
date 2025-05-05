@@ -10,8 +10,18 @@ import java.util.List;
 
 import com.project.model.Game;
 
+/**
+ * Clase que gestiona las operaciones relacionadas con los juegos en la base de
+ * datos. Proporciona métodos para listar, agregar y eliminar juegos.
+ */
 public class GameRepository {
 
+    /**
+     * Obtiene la lista de todos los juegos almacenados en la base de datos.
+     *
+     * @return Una lista de objetos {@link Game} que representan los juegos
+     * almacenados.
+     */
     public static List<Game> showListGames() {
         List<Game> games = new ArrayList<>();
         String query = "SELECT * FROM games";
@@ -31,6 +41,12 @@ public class GameRepository {
         return games;
     }
 
+    /**
+     * Agrega un nuevo juego a la base de datos.
+     *
+     * @param game El objeto {@link Game} que contiene los datos del juego a
+     * agregar.
+     */
     public static void addListGames(Game game) {
         String query = "INSERT INTO games (name, genre, exePath) VALUES (?, ?, ?)";
         try (Connection conn = ConnectionDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -49,6 +65,12 @@ public class GameRepository {
         }
     }
 
+    /**
+     * Elimina un juego de la base de datos.
+     *
+     * @param game El objeto {@link Game} que representa el juego a eliminar.
+     * Debe contener un ID válido.
+     */
     public static void deleteListGames(Game game) {
         if (game.getId() == null) {
             System.out.println("Error: Intentando eliminar un juego con ID nulo");

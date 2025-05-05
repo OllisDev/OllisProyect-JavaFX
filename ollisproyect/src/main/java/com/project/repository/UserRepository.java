@@ -11,8 +11,22 @@ import com.project.model.User;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+/**
+ * Clase que gestiona las operaciones relacionadas con los usuarios en la base
+ * de datos. Proporciona métodos para registrar, validar y obtener información
+ * de los usuarios.
+ */
 public class UserRepository {
 
+    /**
+     * Crea un nuevo usuario en la base de datos. Valida que el nombre de
+     * usuario y el correo electrónico no existan previamente.
+     *
+     * @param user El objeto {@link User} que contiene los datos del usuario a
+     * registrar.
+     * @return {@code true} si el usuario se creó correctamente, {@code false}
+     * en caso contrario.
+     */
     public boolean CreateUser(User user) {
         if (ValidateUserRegisterUserName(user.getUserName())) {
             System.out.println("El usuario ya existe en la base de datos");
@@ -56,6 +70,13 @@ public class UserRepository {
         return false;
     }
 
+    /**
+     * Valida si un nombre de usuario ya está registrado en la base de datos.
+     *
+     * @param userName El nombre de usuario a validar.
+     * @return {@code true} si el nombre de usuario ya existe, {@code false} en
+     * caso contrario.
+     */
     public boolean ValidateUserRegisterUserName(String userName) {
         String query = "SELECT 1 FROM Usuario WHERE userName = ? LIMIT 1";
 
@@ -70,6 +91,13 @@ public class UserRepository {
         return false;
     }
 
+    /**
+     * Valida si un correo electrónico ya está registrado en la base de datos.
+     *
+     * @param email El correo electrónico a validar.
+     * @return {@code true} si el correo electrónico ya existe, {@code false} en
+     * caso contrario.
+     */
     public boolean ValidateUserRegisterEmail(String email) {
         String query = "SELECT 1 FROM Usuario WHERE email = ? LIMIT 1";
 
@@ -84,6 +112,15 @@ public class UserRepository {
         return false;
     }
 
+    /**
+     * Valida las credenciales de inicio de sesión de un usuario.
+     *
+     * @param userName El campo de texto que contiene el nombre de usuario.
+     * @param password El campo de contraseña que contiene la contraseña del
+     * usuario.
+     * @return {@code true} si las credenciales son válidas, {@code false} en
+     * caso contrario.
+     */
     public boolean ValidateUserLogIn(TextField userName, PasswordField password) {
         String query = "SELECT * FROM Usuario WHERE userName = ? AND password = ?";
 
@@ -99,6 +136,13 @@ public class UserRepository {
         return false;
     }
 
+    /**
+     * Obtiene un usuario de la base de datos a partir de su nombre de usuario.
+     *
+     * @param username El nombre de usuario del usuario a buscar.
+     * @return Un objeto {@link User} que representa al usuario encontrado, o
+     * {@code null} si no se encuentra.
+     */
     public User getUserByUsername(String username) {
 
         String query = "SELECT * FROM Usuario WHERE userName = ?";
@@ -124,6 +168,14 @@ public class UserRepository {
         return null; // Si no se encuentra el usuario
     }
 
+    /**
+     * Obtiene el balance de monedas de un usuario a partir de su nombre de
+     * usuario.
+     *
+     * @param username El nombre de usuario del usuario.
+     * @return El balance de monedas del usuario, o {@code -1} si ocurre un
+     * error.
+     */
     public int showCoins(String username) {
         String query = "SELECT balance FROM Usuario Where userName = ?";
         try (Connection conn = ConnectionDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {

@@ -1,0 +1,17 @@
+-------------------------------------------------------------------------------
+Test set: PixelCoinsWindowTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 2.936 s <<< FAILURE! -- in PixelCoinsWindowTest
+PixelCoinsWindowTest.testUIInteraction -- Time elapsed: 2.842 s <<< ERROR!
+org.testfx.service.query.EmptyNodeQueryException: 
+there is no node in the scene-graph matching the query: NodeQuery: from nodes: [BorderPane@1c387549[styleClass=root]],
+lookup by function: "org.testfx.util.NodeQueryUtils$$Lambda/0x00000157953f8240@346d61be",
+lookup by selector: "#btnExecuteGame"
+	at org.testfx.service.query.impl.NodeQueryImpl.query(NodeQueryImpl.java:132)
+	at org.testfx.api.FxAssert.toNode(FxAssert.java:168)
+	at org.testfx.api.FxAssert.verifyThat(FxAssert.java:71)
+	at PixelCoinsWindowTest.testUIInteraction(PixelCoinsWindowTest.java:79)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
