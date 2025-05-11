@@ -110,6 +110,7 @@ public class MainWindow extends Application {
         Stage stage = new Stage();
 
         Label lblRegister = new Label("REGISTRO");
+        lblRegister.setId("lblRegister");
         HBox layoutRegister = new HBox(10);
         layoutRegister.getChildren().addAll(lblRegister);
         layoutRegister.setAlignment(Pos.TOP_CENTER);
@@ -117,7 +118,7 @@ public class MainWindow extends Application {
         Label lblName = new Label("Nombre:");
 
         TextField txtName = new TextField();
-
+        txtName.setId("txtNameRegister");
         Label errorName = createErrorLabel();
 
         HBox layoutName = new HBox(10);
@@ -127,7 +128,7 @@ public class MainWindow extends Application {
         Label lblLastName = new Label("Apellidos:");
 
         TextField txtLastName = new TextField();
-
+        txtLastName.setId("txtLastNameRegister");
         Label errorLastName = createErrorLabel();
 
         HBox layoutLastName = new HBox(10);
@@ -137,6 +138,7 @@ public class MainWindow extends Application {
         Label lblUserName = new Label("Nombre de usuario:");
 
         TextField txtUserName = new TextField();
+        txtUserName.setId("txtUserNameRegister");
 
         Label errorUserName = createErrorLabel();
 
@@ -147,6 +149,7 @@ public class MainWindow extends Application {
         Label lblPassword = new Label("Contraseña:");
 
         PasswordField txtPassword = new PasswordField();
+        txtPassword.setId("txtPasswordRegister");
 
         TextField txtPasswordVisible = new TextField();
 
@@ -171,6 +174,7 @@ public class MainWindow extends Application {
         Label lblEmail = new Label("Email:");
 
         TextField txtEmail = new TextField();
+        txtEmail.setId("txtEmailRegister");
 
         Label errorEmail = createErrorLabel();
 
@@ -181,6 +185,7 @@ public class MainWindow extends Application {
         Label lblBirthday = new Label("Fecha de nacimiento:");
 
         DatePicker datePicker = new DatePicker();
+        datePicker.setId("datePickerRegister");
 
         Label errorBirthday = createErrorLabel();
 
@@ -193,6 +198,7 @@ public class MainWindow extends Application {
         btnCancel.setOnAction(e -> stage.close());
 
         Button btnAccept = new Button("Aceptar");
+        btnAccept.setId("btnAcceptRegister");
 
         btnAccept.setOnAction(e -> {
             boolean isValid = true;
@@ -260,18 +266,10 @@ public class MainWindow extends Application {
                 boolean success = userRepository.CreateUser(user);
 
                 if (success) {
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setHeaderText(null);
-                    alert.setContentText("Registro exitoso");
-                    alert.setTitle("Información");
-                    alert.showAndWait();
+                    showAlert(AlertType.INFORMATION, "Información", null, "Registro exitoso");
                     stage.close();
                 } else {
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setHeaderText(null);
-                    alert.setContentText("Error al registrar el usuario, debido a que ya existe");
-                    alert.setTitle("Error");
-                    alert.showAndWait();
+                    showAlert(AlertType.ERROR, "Error", null, "Error al registrar el usuario, debido a que ya existe");
                     stage.close();
                 }
             }
@@ -302,6 +300,7 @@ public class MainWindow extends Application {
         Stage stage = new Stage();
 
         Label lblLogIn = new Label("INICIO SESIÓN");
+        lblLogIn.setId("lblLogIn");
         HBox layoutLogIn = new HBox(10);
         layoutLogIn.setAlignment(Pos.TOP_CENTER);
         layoutLogIn.getChildren().addAll(lblLogIn);
@@ -309,6 +308,7 @@ public class MainWindow extends Application {
         Label lblUserName = new Label("Nombre de usuario:");
 
         TextField txtUserName = new TextField();
+        txtUserName.setId("txtUserNameLogIn");
 
         Label errorUsername = createErrorLabel();
 
@@ -319,6 +319,7 @@ public class MainWindow extends Application {
         Label lblPassword = new Label("Contraseña:");
 
         PasswordField txtPassword = new PasswordField();
+        txtPassword.setId("txtPasswordLogIn");
 
         TextField txtPasswordVisible = new TextField();
 
@@ -345,6 +346,7 @@ public class MainWindow extends Application {
         btnCancel.setOnAction(e -> stage.close());
 
         Button btnAccept = new Button("Aceptar");
+        btnAccept.setId("btnAcceptLogIn");
 
         btnAccept.setOnAction(e -> {
             boolean isValid = true;
@@ -376,22 +378,14 @@ public class MainWindow extends Application {
                         this.setCurrentUser(user);
                     }
 
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setHeaderText(null);
-                    alert.setContentText("Inicio de sesión exitoso");
-                    alert.setTitle("Información");
-                    alert.showAndWait();
+                    showAlert(AlertType.INFORMATION, "Información", null, "Inicio de sesión exitoso");
                     stage.close();
 
                     PixelCoinsWindow pixelCoinsWindow = new PixelCoinsWindow(this);
                     Stage pStage = new Stage();
                     pixelCoinsWindow.start(pStage);
                 } else {
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setHeaderText(null);
-                    alert.setContentText("Error al iniciar sesión, debido a que el usuario no existe");
-                    alert.setTitle("Error");
-                    alert.showAndWait();
+                    showAlert(AlertType.ERROR, "Error", null, "Error al iniciar sesión, debido a que el usuario no existe");
                     stage.close();
                 }
             }
@@ -429,7 +423,7 @@ public class MainWindow extends Application {
      * @param passwordField El campo de contraseña.
      * @param textField El campo de texto visible.
      */
-    private void showDisguisePassword(PasswordField passwordField, TextField textField) {
+    public void showDisguisePassword(PasswordField passwordField, TextField textField) {
         if (passwordField.isVisible()) {
             textField.setText(passwordField.getText());
             textField.setManaged(true);
@@ -443,6 +437,22 @@ public class MainWindow extends Application {
             textField.setManaged(false);
             textField.setVisible(false);
         }
+    }
+
+    /**
+     * Muestra una alerta con el tipo, título y mensaje especificados.
+     *
+     * @param alertType El tipo de alerta (INFORMATION, ERROR, etc.).
+     * @param title El título de la alerta.
+     * @param message El mensaje de la alerta.
+     */
+    public Alert showAlert(AlertType type, String title, String headerText, String contentText) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+        return alert;
     }
 
     /**

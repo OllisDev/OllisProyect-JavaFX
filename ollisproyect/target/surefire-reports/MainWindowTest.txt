@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
-Test set: PixelCoinsWindowTest
+Test set: MainWindowTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.631 s -- in PixelCoinsWindowTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.440 s -- in MainWindowTest

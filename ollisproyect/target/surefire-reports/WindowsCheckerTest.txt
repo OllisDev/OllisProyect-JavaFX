@@ -1,0 +1,22 @@
+-------------------------------------------------------------------------------
+Test set: WindowsCheckerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.433 s <<< FAILURE! -- in WindowsCheckerTest
+WindowsCheckerTest.testGetActiveWindowTitle -- Time elapsed: 1.398 s <<< ERROR!
+org.powermock.api.mockito.ClassNotPreparedException: 
+
+
+[Ljava.lang.Object;@2cc04358
+The class com.sun.jna.platform.win32.User32 not prepared for test.
+
+	at org.powermock.api.mockito.expectation.reporter.MockitoPowerMockReporter.classNotPrepared(MockitoPowerMockReporter.java:29)
+	at org.powermock.api.mockito.internal.mockcreation.MockTypeValidatorFactory$DefaultMockTypeValidator.validate(MockTypeValidatorFactory.java:37)
+	at org.powermock.api.mockito.internal.mockcreation.AbstractMockCreator.validateType(AbstractMockCreator.java:10)
+	at org.powermock.api.mockito.internal.mockcreation.DefaultMockCreator.createMock(DefaultMockCreator.java:49)
+	at org.powermock.api.mockito.internal.mockcreation.DefaultMockCreator.mock(DefaultMockCreator.java:40)
+	at org.powermock.api.mockito.PowerMockito.mockStatic(PowerMockito.java:62)
+	at WindowsCheckerTest.testGetActiveWindowTitle(WindowsCheckerTest.java:25)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+

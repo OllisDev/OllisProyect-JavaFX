@@ -184,6 +184,7 @@ public class PixelCoinsWindow extends Application {
 
         Label lblUserName = new Label("Nombre de usuario: ");
         TextField txtUserName = new TextField();
+        txtUserName.setId("txtUserNameAccount");
         txtUserName.setEditable(false);
 
         HBox layoutUserName = new HBox(10);
@@ -192,6 +193,7 @@ public class PixelCoinsWindow extends Application {
 
         Label lblPassword = new Label("Contraseña: ");
         PasswordField txtPassword = new PasswordField();
+        txtPassword.setId("txtPasswordAccount");
         txtPassword.setEditable(false);
 
         TextField txtPasswordVisible = new TextField();
@@ -215,6 +217,7 @@ public class PixelCoinsWindow extends Application {
 
         Label lblEmail = new Label("Email: ");
         TextField txtEmail = new TextField();
+        txtEmail.setId("txtEmailAccount");
         txtEmail.setEditable(false);
 
         HBox layoutEmail = new HBox(10);
@@ -278,8 +281,11 @@ public class PixelCoinsWindow extends Application {
         layoutTable.getChildren().addAll(table);
 
         Button btnAddGame = new Button("Añadir juego");
+        btnAddGame.setId("btnAddGame");
         Button btnDeleteGame = new Button("Borrar juego");
+        btnDeleteGame.setId("btnDeleteGame");
         Button btnExecuteGame = new Button("Ejecutar juego");
+        btnExecuteGame.setId("btnExecuteGame");
 
         btnAddGame.getStyleClass().add("buttons");
         btnDeleteGame.getStyleClass().add("buttons");
@@ -296,12 +302,7 @@ public class PixelCoinsWindow extends Application {
                 gameRepository.deleteListGames(selectedGame);
                 table.getItems().remove(selectedGame);
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText("Seleccione un juego para eliminar.");
-                alert.setTitle("Error");
-                alert.showAndWait();
-                alert.close();
+                showAlert(Alert.AlertType.ERROR, "Error", null, "Seleccione un juego para eliminar.");
             }
         });
 
@@ -325,7 +326,7 @@ public class PixelCoinsWindow extends Application {
      * Muestra la escena de la tienda. Permite visualizar el saldo de monedas
      * del usuario y productos disponibles.
      */
-    private void showShopScene() {
+    public void showShopScene() {
         Label lblShop = new Label("Tienda");
         VBox layoutShop = new VBox(10);
 
@@ -335,6 +336,7 @@ public class PixelCoinsWindow extends Application {
         User currentUser = mainWindow.getCurrentUser();
         int balance = userRepository.showCoins(currentUser.getUserName());
         Label lblBalance = new Label("Monedas: " + balance);
+        lblBalance.setId("lblBalance");
 
         lblBalance.setStyle("-fx-font-size: 10px; -fx-font-family: 'Press Start 2P';");
 
@@ -343,6 +345,7 @@ public class PixelCoinsWindow extends Application {
         layoutBalance.getChildren().add(lblBalance);
 
         Label lblCommingSoon = new Label("Proximamente productos en la tienda...");
+        lblCommingSoon.setId("lblCommingSoon");
         lblCommingSoon.setStyle("-fx-font-size: 10px; -fx-font-family: 'Press Start 2P'; -fx-text-fill: red;");
 
         VBox layoutCommingSoon = new VBox(10);
@@ -382,7 +385,7 @@ public class PixelCoinsWindow extends Application {
      * @param passwordField El campo de contraseña.
      * @param textField El campo de texto visible.
      */
-    private void showDisguisePassword(PasswordField passwordField, TextField textField) {
+    public void showDisguisePassword(PasswordField passwordField, TextField textField) {
         if (passwordField.isVisible()) {
             textField.setText(passwordField.getText());
             textField.setManaged(true);
@@ -408,6 +411,7 @@ public class PixelCoinsWindow extends Application {
         Label lblName = new Label("Nombre del juego: ");
 
         TextField txtName = new TextField();
+        txtName.setId("txtNameGame");
 
         HBox layoutName = new HBox(10);
         layoutName.setAlignment(Pos.CENTER);
@@ -416,6 +420,7 @@ public class PixelCoinsWindow extends Application {
         Label lblGenre = new Label("Genero: ");
 
         ComboBox<String> comboBox = new ComboBox<>();
+        comboBox.setId("comboBox");
         comboBox.getItems().addAll("Aventura", "RPG", "Shooter", "Terror", "Plataforma de juegos", "Emulador");
 
         HBox layoutGenre = new HBox(10);
@@ -425,6 +430,7 @@ public class PixelCoinsWindow extends Application {
         Label lblPath = new Label("Ruta del juego: ");
 
         TextField txtPath = new TextField();
+        txtPath.setId("txtPath");
         txtPath.setEditable(false);
 
         Button btnBrowse = new Button("Buscar");
@@ -435,6 +441,7 @@ public class PixelCoinsWindow extends Application {
         layoutPath.getChildren().addAll(lblPath, txtPath, btnBrowse);
 
         Button btnAddGame = new Button("Añadir juego");
+        btnAddGame.setId("btnAddGameRegisterGame");
         Button btnCancel = new Button("Cancelar");
 
         btnAddGame.setOnAction(e -> {
@@ -443,11 +450,7 @@ public class PixelCoinsWindow extends Application {
             String exePath = txtPath.getText().trim();
 
             if (gameName.isEmpty() || genre == null || exePath.isEmpty()) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Todos los campos deben completarse");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.ERROR, "Error", null, "Todos los campos deben completarse");
                 return;
             }
 
@@ -456,20 +459,12 @@ public class PixelCoinsWindow extends Application {
             boolean exists = games.stream().anyMatch(game -> game.getExePath().equalsIgnoreCase(exePath));
 
             if (exists) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Este juego ya está en la lista");
-                alert.showAndWait();
+                showAlert(AlertType.ERROR, "Error", null, "Este juego ya está en la lista");
                 return;
             } else {
                 Game newGame = new Game(gameName, genre, exePath);
                 gameRepository.addListGames(newGame);
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Éxito");
-                alert.setHeaderText(null);
-                alert.setContentText("Juego agregado correctamente");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.INFORMATION, "Éxito", null, "Juego agregado correctamente");
                 stage.close(); // Cierra la ventana de registro
             }
         });
@@ -525,11 +520,7 @@ public class PixelCoinsWindow extends Application {
         Game selectedGame = table.getSelectionModel().getSelectedItem();
 
         if (currentUser == null || currentUser.getId() == null) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("No hay usuario autenticado o el ID es nulo.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.ERROR, "Error", null, "No hay usuario autenticado o el ID es nulo.");
             return;
         }
 
@@ -545,6 +536,7 @@ public class PixelCoinsWindow extends Application {
                 gameAlert.setHeaderText("Jugando: " + selectedGame.getName());
 
                 Label timeLabel = new Label("Tiempo jugado: 00:00:00");
+                timeLabel.setId("timeLabel");
                 AtomicLong secondsPlayed = new AtomicLong(0);
 
                 Timeline timeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), e -> {
@@ -622,17 +614,10 @@ public class PixelCoinsWindow extends Application {
 
             } catch (IOException | InterruptedException e) {
                 Alert alert = new Alert(AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText("No se pudo ejecutar el juego.");
-                alert.setTitle("Error");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.ERROR, "Error", null, "No se pudo ejecutar el juego.");
             }
         } else {
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setHeaderText(null);
-            alert.setContentText("Selecciona un juego antes de ejecutar");
-            alert.setTitle("Advertencia");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Advertencia", null, "Selecciona un juego antes de ejecutar");
         }
     }
 
@@ -706,6 +691,15 @@ public class PixelCoinsWindow extends Application {
         mouseListener = new GlobalMouseListener(windowTittle, () -> {
             lastActivityTime.set(System.currentTimeMillis());
         });
+    }
+
+    public Alert showAlert(AlertType type, String title, String headerText, String contentText) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+        return alert;
     }
 
 }
