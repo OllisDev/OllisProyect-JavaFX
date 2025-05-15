@@ -16,8 +16,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -82,17 +83,19 @@ public class MainWindow extends Application {
 
         btnLogin.setOnAction(e -> LogInWindow());
 
-        Pane background = new Pane();
-        background.setStyle("-fx-background-color:rgb(54, 54, 54);");
+        ImageView gifBackground = new ImageView(new Image(getClass().getResourceAsStream("./pixel_blue.gif")));
+        gifBackground.setFitWidth(1620);
+        gifBackground.setFitHeight(920);
+        gifBackground.setPreserveRatio(false);
 
         VBox layout = new VBox(15);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(lblWelcome, btnRegister, btnLogin);
 
         StackPane root = new StackPane();
-        root.getChildren().addAll(background, layout);
+        root.getChildren().addAll(gifBackground, layout);
 
-        Scene scene = new Scene(root, 1000, 800);
+        Scene scene = new Scene(root, 1620, 920);
         scene.getStylesheets().add(getClass().getResource("styles/mainWindow.css").toExternalForm());
 
         primaryStage.setScene(scene);
@@ -109,8 +112,68 @@ public class MainWindow extends Application {
     public void RegisterWindow() {
         Stage stage = new Stage();
 
+        ImageView checkGifName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifName.setFitWidth(24);
+        checkGifName.setFitHeight(24);
+        checkGifName.setVisible(false);
+
+        ImageView checkGifLastName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifLastName.setFitWidth(24);
+        checkGifLastName.setFitHeight(24);
+        checkGifLastName.setVisible(false);
+
+        ImageView checkGifUserName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifUserName.setFitWidth(24);
+        checkGifUserName.setFitHeight(24);
+        checkGifUserName.setVisible(false);
+
+        ImageView checkGifPassword = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifPassword.setFitWidth(24);
+        checkGifPassword.setFitHeight(24);
+        checkGifPassword.setVisible(false);
+
+        ImageView checkGifEmail = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifEmail.setFitWidth(24);
+        checkGifEmail.setFitHeight(24);
+        checkGifEmail.setVisible(false);
+
+        ImageView checkGifBirthday = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifBirthday.setFitWidth(24);
+        checkGifBirthday.setFitHeight(24);
+        checkGifBirthday.setVisible(false);
+
+        ImageView checkErrorName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        checkErrorName.setFitWidth(24);
+        checkErrorName.setFitHeight(24);
+        checkErrorName.setVisible(false);
+
+        ImageView checkErrorLastName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        checkErrorLastName.setFitWidth(24);
+        checkErrorLastName.setFitHeight(24);
+        checkErrorLastName.setVisible(false);
+
+        ImageView checkErrorUserName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        checkErrorUserName.setFitWidth(24);
+        checkErrorUserName.setFitHeight(24);
+        checkErrorUserName.setVisible(false);
+
+        ImageView checkErrorPassword = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        checkErrorPassword.setFitWidth(24);
+        checkErrorPassword.setFitHeight(24);
+        checkErrorPassword.setVisible(false);
+
+        ImageView checkErrorEmail = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        checkErrorEmail.setFitWidth(24);
+        checkErrorEmail.setFitHeight(24);
+        checkErrorEmail.setVisible(false);
+
+        ImageView checkErrorBirthday = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        checkErrorBirthday.setFitWidth(24);
+        checkErrorBirthday.setFitHeight(24);
+        checkErrorBirthday.setVisible(false);
+
         Label lblRegister = new Label("REGISTRO");
-        lblRegister.setId("lblRegister");
+        lblRegister.getStyleClass().add("label-register");
         HBox layoutRegister = new HBox(10);
         layoutRegister.getChildren().addAll(lblRegister);
         layoutRegister.setAlignment(Pos.TOP_CENTER);
@@ -119,37 +182,50 @@ public class MainWindow extends Application {
 
         TextField txtName = new TextField();
         txtName.setId("txtNameRegister");
+        txtName.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifName.setVisible(newVal);
+        });
+
         Label errorName = createErrorLabel();
 
         HBox layoutName = new HBox(10);
-        layoutName.getChildren().addAll(lblName, txtName, errorName);
+        layoutName.getChildren().addAll(lblName, txtName, checkGifName, errorName, checkErrorName);
         layoutName.setAlignment(Pos.CENTER);
 
         Label lblLastName = new Label("Apellidos:");
 
         TextField txtLastName = new TextField();
         txtLastName.setId("txtLastNameRegister");
+        txtLastName.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifLastName.setVisible(newVal);
+        });
         Label errorLastName = createErrorLabel();
 
         HBox layoutLastName = new HBox(10);
-        layoutLastName.getChildren().addAll(lblLastName, txtLastName, errorLastName);
+        layoutLastName.getChildren().addAll(lblLastName, txtLastName, checkGifLastName, errorLastName, checkErrorLastName);
         layoutLastName.setAlignment(Pos.CENTER);
 
         Label lblUserName = new Label("Nombre de usuario:");
 
         TextField txtUserName = new TextField();
         txtUserName.setId("txtUserNameRegister");
+        txtUserName.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifUserName.setVisible(newVal);
+        });
 
         Label errorUserName = createErrorLabel();
 
         HBox layoutUserName = new HBox(10);
-        layoutUserName.getChildren().addAll(lblUserName, txtUserName, errorUserName);
+        layoutUserName.getChildren().addAll(lblUserName, txtUserName, checkGifUserName, errorUserName, checkErrorUserName);
         layoutUserName.setAlignment(Pos.CENTER);
 
         Label lblPassword = new Label("Contraseña:");
 
         PasswordField txtPassword = new PasswordField();
         txtPassword.setId("txtPasswordRegister");
+        txtPassword.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifPassword.setVisible(newVal);
+        });
 
         TextField txtPasswordVisible = new TextField();
 
@@ -168,29 +244,35 @@ public class MainWindow extends Application {
         Label errorPassword = createErrorLabel();
 
         HBox layoutPassword = new HBox(10);
-        layoutPassword.getChildren().addAll(lblPassword, txtPassword, txtPasswordVisible, btnViewPassword, errorPassword);
+        layoutPassword.getChildren().addAll(lblPassword, txtPassword, txtPasswordVisible, btnViewPassword, checkGifPassword, errorPassword, checkErrorPassword);
         layoutPassword.setAlignment(Pos.CENTER);
 
         Label lblEmail = new Label("Email:");
 
         TextField txtEmail = new TextField();
         txtEmail.setId("txtEmailRegister");
+        txtEmail.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifEmail.setVisible(newVal);
+        });
 
         Label errorEmail = createErrorLabel();
 
         HBox layoutEmail = new HBox(10);
-        layoutEmail.getChildren().addAll(lblEmail, txtEmail, errorEmail);
+        layoutEmail.getChildren().addAll(lblEmail, txtEmail, checkGifEmail, errorEmail, checkErrorEmail);
         layoutEmail.setAlignment(Pos.CENTER);
 
         Label lblBirthday = new Label("Fecha de nacimiento:");
 
         DatePicker datePicker = new DatePicker();
         datePicker.setId("datePickerRegister");
+        datePicker.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifBirthday.setVisible(newVal);
+        });
 
         Label errorBirthday = createErrorLabel();
 
         HBox layoutBirthday = new HBox(10);
-        layoutBirthday.getChildren().addAll(lblBirthday, datePicker, errorBirthday);
+        layoutBirthday.getChildren().addAll(lblBirthday, datePicker, checkGifBirthday, errorBirthday, checkErrorBirthday);
         layoutBirthday.setAlignment(Pos.CENTER);
 
         Button btnCancel = new Button("Cancelar");
@@ -205,55 +287,71 @@ public class MainWindow extends Application {
 
             if (txtName.getText().trim().isEmpty()) {
                 errorName.setText("El nombre no puede estar vacío");
+                checkErrorName.setVisible(true);
                 isValid = false;
             } else if (!txtName.getText().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")) {
                 errorName.setText("El nombre solo debe contener letras");
+                checkErrorName.setVisible(true);
             } else {
                 errorName.setText("");
+                checkErrorName.setVisible(false);
             }
 
             if (txtLastName.getText().trim().isEmpty()) {
                 errorLastName.setText("Los apellidos no pueden estar vacíos");
+                checkErrorLastName.setVisible(true);
                 isValid = false;
             } else if (!txtLastName.getText().matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")) {
                 errorLastName.setText("Los apellidos solo deben contener letras");
+                checkErrorLastName.setVisible(true);
 
             } else {
                 errorLastName.setText("");
+                checkErrorLastName.setVisible(false);
             }
 
             if (txtUserName.getText().trim().isEmpty()) {
                 errorUserName.setText("El nombre de usuario no puede estar vacío");
+                checkErrorUserName.setVisible(true);
                 isValid = false;
             } else {
                 errorUserName.setText("");
+                checkErrorUserName.setVisible(false);
             }
 
             if (txtPassword.getText().trim().isEmpty()) {
                 errorPassword.setText("La contraseña no puede estar vacía");
+                checkErrorPassword.setVisible(true);
                 isValid = false;
             } else if (txtPassword.getText().length() < 8) {
                 errorPassword.setText("La contraseña debe contener 8 caracteres");
+                checkErrorPassword.setVisible(true);
                 isValid = false;
             } else {
                 errorPassword.setText("");
+                checkErrorPassword.setVisible(false);
             }
 
             if (txtEmail.getText().trim().isEmpty()) {
                 errorEmail.setText("El email no puede estar vacío");
+                checkErrorEmail.setVisible(true);
                 isValid = false;
             } else if (!txtEmail.getText().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
                 errorEmail.setText("Formato de email no válido");
+                checkErrorEmail.setVisible(true);
                 isValid = false;
             } else {
                 errorEmail.setText("");
+                checkErrorEmail.setVisible(false);
             }
 
             if (datePicker.getValue() == null) {
                 errorBirthday.setText("La fecha de nacimiento es obligatorio");
+                checkErrorBirthday.setVisible(true);
                 isValid = false;
             } else {
                 errorBirthday.setText("");
+                checkErrorBirthday.setVisible(false);
             }
 
             if (isValid) {
@@ -284,7 +382,7 @@ public class MainWindow extends Application {
         mainLayout.getChildren().addAll(layoutRegister, layoutName, layoutLastName, layoutUserName, layoutPassword, layoutEmail, layoutBirthday, layoutButtons);
         mainLayout.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(mainLayout, 800, 800);
+        Scene scene = new Scene(mainLayout, 1200, 800);
         scene.getStylesheets().add(getClass().getResource("styles/registerWindow.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("PixelCoinsLauncher - Registrarse");
@@ -299,6 +397,16 @@ public class MainWindow extends Application {
     public void LogInWindow() {
         Stage stage = new Stage();
 
+        ImageView checkGifUserName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifUserName.setFitWidth(24);
+        checkGifUserName.setFitHeight(24);
+        checkGifUserName.setVisible(false);
+
+        ImageView checkGifPassword = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifPassword.setFitWidth(24);
+        checkGifPassword.setFitHeight(24);
+        checkGifPassword.setVisible(false);
+
         Label lblLogIn = new Label("INICIO SESIÓN");
         lblLogIn.setId("lblLogIn");
         HBox layoutLogIn = new HBox(10);
@@ -309,17 +417,23 @@ public class MainWindow extends Application {
 
         TextField txtUserName = new TextField();
         txtUserName.setId("txtUserNameLogIn");
+        txtUserName.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifUserName.setVisible(newVal);
+        });
 
         Label errorUsername = createErrorLabel();
 
         HBox layoutUserName = new HBox(10);
         layoutUserName.setAlignment(Pos.CENTER);
-        layoutUserName.getChildren().addAll(lblUserName, txtUserName, errorUsername);
+        layoutUserName.getChildren().addAll(lblUserName, txtUserName, checkGifUserName, errorUsername);
 
         Label lblPassword = new Label("Contraseña:");
 
         PasswordField txtPassword = new PasswordField();
         txtPassword.setId("txtPasswordLogIn");
+        txtPassword.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifPassword.setVisible(newVal);
+        });
 
         TextField txtPasswordVisible = new TextField();
 
@@ -339,7 +453,7 @@ public class MainWindow extends Application {
 
         HBox layoutPassword = new HBox(10);
         layoutPassword.setAlignment(Pos.CENTER);
-        layoutPassword.getChildren().addAll(lblPassword, txtPassword, txtPasswordVisible, btnViewPassword, errorPassword);
+        layoutPassword.getChildren().addAll(lblPassword, txtPassword, txtPasswordVisible, btnViewPassword, checkGifPassword, errorPassword);
 
         Button btnCancel = new Button("Cancelar");
 

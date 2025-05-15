@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: MainWindowTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.440 s -- in MainWindowTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.01 s -- in MainWindowTest

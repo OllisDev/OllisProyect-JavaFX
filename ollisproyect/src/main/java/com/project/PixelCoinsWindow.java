@@ -693,6 +693,13 @@ public class PixelCoinsWindow extends Application {
         });
     }
 
+    /**
+     * Muestra una alerta con el tipo, título y mensaje especificados.
+     *
+     * @param alertType El tipo de alerta (INFORMATION, ERROR, etc.).
+     * @param title El título de la alerta.
+     * @param message El mensaje de la alerta.
+     */
     public Alert showAlert(AlertType type, String title, String headerText, String contentText) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
