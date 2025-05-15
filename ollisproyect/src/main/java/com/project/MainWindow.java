@@ -382,7 +382,16 @@ public class MainWindow extends Application {
         mainLayout.getChildren().addAll(layoutRegister, layoutName, layoutLastName, layoutUserName, layoutPassword, layoutEmail, layoutBirthday, layoutButtons);
         mainLayout.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(mainLayout, 1200, 800);
+        ImageView gifBackground = new ImageView(new Image(getClass().getResourceAsStream("./videogames.gif")));
+        gifBackground.setFitWidth(1620);
+        gifBackground.setFitHeight(920);
+        gifBackground.setPreserveRatio(false);
+        gifBackground.setOpacity(0.3);
+
+        StackPane root = new StackPane();
+        root.getChildren().addAll(gifBackground, mainLayout);
+
+        Scene scene = new Scene(root, 1620, 920);
         scene.getStylesheets().add(getClass().getResource("styles/registerWindow.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("PixelCoinsLauncher - Registrarse");
@@ -407,7 +416,18 @@ public class MainWindow extends Application {
         checkGifPassword.setFitHeight(24);
         checkGifPassword.setVisible(false);
 
+        ImageView checkErrorUserName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        checkErrorUserName.setFitWidth(24);
+        checkErrorUserName.setFitHeight(24);
+        checkErrorUserName.setVisible(false);
+
+        ImageView checkErrorPassword = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        checkErrorPassword.setFitWidth(24);
+        checkErrorPassword.setFitHeight(24);
+        checkErrorPassword.setVisible(false);
+
         Label lblLogIn = new Label("INICIO SESIÓN");
+        lblLogIn.getStyleClass().add("label-login");
         lblLogIn.setId("lblLogIn");
         HBox layoutLogIn = new HBox(10);
         layoutLogIn.setAlignment(Pos.TOP_CENTER);
@@ -425,7 +445,7 @@ public class MainWindow extends Application {
 
         HBox layoutUserName = new HBox(10);
         layoutUserName.setAlignment(Pos.CENTER);
-        layoutUserName.getChildren().addAll(lblUserName, txtUserName, checkGifUserName, errorUsername);
+        layoutUserName.getChildren().addAll(lblUserName, txtUserName, checkGifUserName, errorUsername, checkErrorUserName);
 
         Label lblPassword = new Label("Contraseña:");
 
@@ -453,7 +473,7 @@ public class MainWindow extends Application {
 
         HBox layoutPassword = new HBox(10);
         layoutPassword.setAlignment(Pos.CENTER);
-        layoutPassword.getChildren().addAll(lblPassword, txtPassword, txtPasswordVisible, btnViewPassword, checkGifPassword, errorPassword);
+        layoutPassword.getChildren().addAll(lblPassword, txtPassword, txtPasswordVisible, btnViewPassword, checkGifPassword, errorPassword, checkErrorPassword);
 
         Button btnCancel = new Button("Cancelar");
 
@@ -467,19 +487,24 @@ public class MainWindow extends Application {
 
             if (txtUserName.getText().trim().isEmpty()) {
                 errorUsername.setText("El nombre de usuario no debe estar vacío");
+                checkErrorUserName.setVisible(true);
                 isValid = false;
             } else {
                 errorUsername.setText("");
+                checkErrorUserName.setVisible(false);
             }
 
             if (txtPassword.getText().trim().isEmpty()) {
                 errorPassword.setText("La contraseña no debe estar vacío");
+                checkErrorPassword.setVisible(true);
                 isValid = false;
             } else if (txtPassword.getText().length() < 8) {
                 errorPassword.setText("La contraseña debe tener mínimo 8 caracteres");
+                checkErrorPassword.setVisible(true);
                 isValid = false;
             } else {
                 errorPassword.setText("");
+                checkErrorPassword.setVisible(false);
             }
 
             if (isValid) {
@@ -513,7 +538,16 @@ public class MainWindow extends Application {
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.getChildren().addAll(layoutLogIn, layoutUserName, layoutPassword, layoutButtons);
 
-        Scene scene = new Scene(mainLayout, 800, 800);
+        ImageView gifBackground = new ImageView(new Image(getClass().getResourceAsStream("./videogames.gif")));
+        gifBackground.setFitWidth(1620);
+        gifBackground.setFitHeight(920);
+        gifBackground.setPreserveRatio(false);
+        gifBackground.setOpacity(0.3);
+
+        StackPane root = new StackPane();
+        root.getChildren().addAll(gifBackground, mainLayout);
+
+        Scene scene = new Scene(root, 1620, 920);
         scene.getStylesheets().add(getClass().getResource("styles/loginWindow.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("PixelCoinsLauncher - Iniciar sesión");
