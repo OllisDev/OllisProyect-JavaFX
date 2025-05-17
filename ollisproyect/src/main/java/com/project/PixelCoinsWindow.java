@@ -133,7 +133,7 @@ public class PixelCoinsWindow extends Application {
         rightPane.setPrefWidth(400);
         mainPane.setCenter(rightPane);
 
-        Scene scene = new Scene(mainPane, 1080, 920);
+        Scene scene = new Scene(mainPane, 1620, 920);
         scene.getStylesheets().add(getClass().getResource("styles/pixelCoinsWindow.css").toExternalForm());
 
         pixelCoinWindow.setScene(scene);
@@ -176,27 +176,58 @@ public class PixelCoinsWindow extends Application {
      */
     public void showAccountScene() {
 
-        Label lblAccount = new Label("Cuenta");
+        ImageView checkGifUserName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifUserName.setFitWidth(24);
+        checkGifUserName.setFitHeight(24);
+        checkGifUserName.setVisible(false);
+
+        ImageView checkGifPassword = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifPassword.setFitWidth(24);
+        checkGifPassword.setFitHeight(24);
+        checkGifPassword.setVisible(false);
+
+        ImageView checkGifEmail = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifEmail.setFitWidth(24);
+        checkGifEmail.setFitHeight(24);
+        checkGifEmail.setVisible(false);
+
+        Label lblAccount = new Label("CUENTA");
+        lblAccount.setStyle("-fx-font-size: 30px;");
+        lblAccount.getStyleClass().add("label-cuenta");
         VBox layoutAccount = new VBox(10);
 
         layoutAccount.setAlignment(Pos.TOP_CENTER);
         layoutAccount.getChildren().addAll(lblAccount);
 
         Label lblUserName = new Label("Nombre de usuario: ");
+        lblUserName.getStyleClass().add("label-account");
         TextField txtUserName = new TextField();
+        txtUserName.setStyle("-fx-text-fill: #48ff00; -fx-background-color: #181818; -fx-border-color: #00ccff; -fx-border-width: 2px; -fx-border-radius: 10; -fx-padding: 10 14 10 14;");
+        txtUserName.getStyleClass().add("text-field-account");
         txtUserName.setId("txtUserNameAccount");
+        txtUserName.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifUserName.setVisible(newVal);
+        });
         txtUserName.setEditable(false);
 
         HBox layoutUserName = new HBox(10);
-        layoutUserName.getChildren().addAll(lblUserName, txtUserName);
+        layoutUserName.getChildren().addAll(lblUserName, txtUserName, checkGifUserName);
         layoutUserName.setAlignment(Pos.CENTER);
 
         Label lblPassword = new Label("Contraseña: ");
+        lblPassword.getStyleClass().add("label-account");
         PasswordField txtPassword = new PasswordField();
+        txtPassword.setStyle("-fx-text-fill: #48ff00; -fx-background-color: #181818; -fx-border-color: #00ccff; -fx-border-width: 2px; -fx-border-radius: 10; -fx-padding: 10 14 10 14;");
+        txtPassword.getStyleClass().add("password-field-account");
         txtPassword.setId("txtPasswordAccount");
+        txtPassword.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifPassword.setVisible(newVal);
+        });
         txtPassword.setEditable(false);
 
         TextField txtPasswordVisible = new TextField();
+        txtPasswordVisible.setStyle("-fx-text-fill: #48ff00; -fx-background-color: #181818; -fx-border-color: #00ccff; -fx-border-width: 2px; -fx-border-radius: 10; -fx-padding: 10 14 10 14;");
+        txtPasswordVisible.getStyleClass().add("password-field-account");
 
         txtPasswordVisible.setManaged(false);
         txtPasswordVisible.setVisible(false);
@@ -212,16 +243,22 @@ public class PixelCoinsWindow extends Application {
         });
 
         HBox layoutPassword = new HBox(10);
-        layoutPassword.getChildren().addAll(lblPassword, txtPassword, txtPasswordVisible, btnViewPassword);
+        layoutPassword.getChildren().addAll(lblPassword, txtPassword, txtPasswordVisible, btnViewPassword, checkGifPassword);
         layoutPassword.setAlignment(Pos.CENTER);
 
         Label lblEmail = new Label("Email: ");
+        lblEmail.getStyleClass().add("label-account");
         TextField txtEmail = new TextField();
+        txtEmail.setStyle("-fx-text-fill: #48ff00; -fx-background-color: #181818; -fx-border-color: #00ccff; -fx-border-width: 2px; -fx-border-radius: 10; -fx-padding: 10 14 10 14;");
+        txtEmail.getStyleClass().add("text-field-account");
         txtEmail.setId("txtEmailAccount");
+        txtEmail.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifEmail.setVisible(newVal);
+        });
         txtEmail.setEditable(false);
 
         HBox layoutEmail = new HBox(10);
-        layoutEmail.getChildren().addAll(lblEmail, txtEmail);
+        layoutEmail.getChildren().addAll(lblEmail, txtEmail, checkGifEmail);
         layoutEmail.setAlignment(Pos.CENTER);
 
         VBox layoutUser = new VBox(10);
@@ -234,7 +271,18 @@ public class PixelCoinsWindow extends Application {
         mainLayout.getChildren().addAll(layoutAccount, layoutUser);
         mainLayout.setAlignment(Pos.CENTER);
 
-        rightPane.setCenter(new StackPane(mainLayout));
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("./videogames_account.jpg")));
+        background.setPreserveRatio(false);
+        background.setOpacity(0.2);
+
+        StackPane stackPane = new StackPane();
+
+        stackPane.getChildren().addAll(background, mainLayout);
+
+        background.fitWidthProperty().bind(stackPane.widthProperty());
+        background.fitHeightProperty().bind(stackPane.heightProperty());
+
+        rightPane.setCenter(new StackPane(stackPane));
     }
 
     /**

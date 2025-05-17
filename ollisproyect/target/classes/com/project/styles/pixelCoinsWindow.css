@@ -10,6 +10,37 @@
     -fx-text-fill: black;
 }
 
+.label-account {
+    -fx-font-family: 'Press Start 2P', monospace;
+    -fx-text-fill: #fff;
+    -fx-effect: dropshadow(gaussian, #00ccff, 3, 0.5, 0, 1);
+}
+
+.label-cuenta {
+    -fx-font-family: 'Press Start 2P', monospace;
+    -fx-font-size: 30px;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, #002fff, 3, 0.5, 0, 1);
+}
+
+.text-field-account {
+    -fx-pref-width: 260px;
+}
+
+.text-field-account:focused {
+    -fx-border-color: #fffb00;
+    -fx-effect: dropshadow(gaussian, #d2e008, 8, 0.7, 0, 2);
+}
+
+.password-field-account {
+    -fx-pref-width: 260px;
+}
+
+.password-field-account:focused {
+    -fx-border-color: #fffb00;
+    -fx-effect: dropshadow(gaussian, #d2e008, 8, 0.7, 0, 2);
+}
+
 .border-pane {
     -fx-background-color: rgb(219, 216, 216);
     -fx-border-color: transparent; /* Oculta cualquier borde visible por defecto */
@@ -49,19 +80,18 @@
 }
 
 .button-password {
-    -fx-background-color: #f8f8f8;
-    -fx-text-fill: #121212;
+    -fx-background-color: linear-gradient(to bottom, #00ccff, #1DB954);
+    -fx-text-fill: #fff;
     -fx-font-size: 14px;
-    -fx-font-family: 'Press Start 2P';
-    -fx-padding: 10 20 10 20;
+    -fx-font-family: 'Press Start 2P', monospace;
+    -fx-padding: 14 32 14 32;
     -fx-background-radius: 15;
-    -fx-border-color: black; /* <-- Borde negro */
-    -fx-border-width: 2;
+    -fx-border-color: #00ccff;
+    -fx-border-width: 1;
     -fx-border-radius: 15;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 4, 0.5, 0, 2);
+    -fx-effect: dropshadow(gaussian, #00ccff, 8, 0.7, 0, 2);
     -fx-cursor: hand;
-    -fx-focus-color: transparent; /* <-- elimina el borde azul */
-    -fx-faint-focus-color: transparent; /* <-- elimina el resplandor azul */
+    -fx-transition: all 0.2s;
 }
 
 .button-password:hover {
