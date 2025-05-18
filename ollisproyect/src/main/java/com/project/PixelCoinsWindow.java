@@ -133,6 +133,17 @@ public class PixelCoinsWindow extends Application {
         rightPane.setPrefWidth(400);
         mainPane.setCenter(rightPane);
 
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("./background_pixel_blocks_2.jpg")));
+        background.setFitWidth(200);
+        background.setFitHeight(920);
+        background.setPreserveRatio(false);
+
+        StackPane stackPane = new StackPane();
+
+        stackPane.getChildren().addAll(background, leftPane);
+
+        mainPane.setLeft(stackPane);
+
         Scene scene = new Scene(mainPane, 1620, 920);
         scene.getStylesheets().add(getClass().getResource("styles/pixelCoinsWindow.css").toExternalForm());
 
