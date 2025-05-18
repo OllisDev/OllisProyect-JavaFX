@@ -46,7 +46,7 @@
 }
 
 .text-field {
-     -fx-background-color: #181818;
+    -fx-background-color: #181818;
     -fx-text-fill: #48ff00;
     -fx-font-family: 'Press Start 2P', monospace;
     -fx-border-color: #00ccff;

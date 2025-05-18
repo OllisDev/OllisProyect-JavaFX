@@ -137,6 +137,7 @@ public class PixelCoinsWindow extends Application {
         scene.getStylesheets().add(getClass().getResource("styles/pixelCoinsWindow.css").toExternalForm());
 
         pixelCoinWindow.setScene(scene);
+        pixelCoinWindow.setResizable(false);
         pixelCoinWindow.setTitle("PixelCoinsLauncher");
         pixelCoinWindow.show();
     }
@@ -273,7 +274,7 @@ public class PixelCoinsWindow extends Application {
 
         ImageView background = new ImageView(new Image(getClass().getResourceAsStream("./videogames_account.jpg")));
         background.setPreserveRatio(false);
-        background.setOpacity(0.2);
+        background.setOpacity(0.1);
 
         StackPane stackPane = new StackPane();
 
@@ -300,8 +301,9 @@ public class PixelCoinsWindow extends Application {
      * juegos desde la aplicación.
      */
     public void showLaunchScene() {
-        Label lblLaunch = new Label("Lanzador");
-        VBox layoutLaunch = new VBox(10);
+        Label lblLaunch = new Label("LANZADOR");
+        lblLaunch.getStyleClass().add("label-launch");
+        VBox layoutLaunch = new VBox(15);
 
         layoutLaunch.setAlignment(Pos.TOP_CENTER);
         layoutLaunch.getChildren().addAll(lblLaunch);
@@ -319,7 +321,7 @@ public class PixelCoinsWindow extends Application {
 
         table.getColumns().addAll(colGenre, colName, colExePath);
         table.setPrefHeight(300);
-        table.setPrefWidth(100);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         List<Game> games = GameRepository.showListGames();
 
@@ -366,7 +368,18 @@ public class PixelCoinsWindow extends Application {
         mainLayout.getChildren().addAll(layoutLaunch, layoutTable, layoutButtons);
         mainLayout.setAlignment(Pos.CENTER);
 
-        rightPane.setCenter(new StackPane(mainLayout));
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("./background_retro_launch_4.jpg")));
+        background.setPreserveRatio(false);
+        background.setOpacity(0.5);
+
+        StackPane stackPane = new StackPane();
+
+        stackPane.getChildren().addAll(background, mainLayout);
+
+        background.fitWidthProperty().bind(stackPane.widthProperty());
+        background.fitHeightProperty().bind(stackPane.heightProperty());
+
+        rightPane.setCenter(new StackPane(stackPane));
 
     }
 
@@ -375,7 +388,13 @@ public class PixelCoinsWindow extends Application {
      * del usuario y productos disponibles.
      */
     public void showShopScene() {
-        Label lblShop = new Label("Tienda");
+        ImageView checkGifCoins = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifCoins.setFitWidth(24);
+        checkGifCoins.setFitHeight(24);
+        checkGifCoins.setVisible(true);
+
+        Label lblShop = new Label("TIENDA");
+        lblShop.setStyle("-fx-font-family: 'Press Start 2P', monospace; -fx-font-size: 30px; -fx-text-fill: #fff; -fx-effect: dropshadow(gaussian, #00ccff, 3, 0.5, 0, 1);");
         VBox layoutShop = new VBox(10);
 
         layoutShop.setAlignment(Pos.TOP_CENTER);
@@ -383,14 +402,20 @@ public class PixelCoinsWindow extends Application {
 
         User currentUser = mainWindow.getCurrentUser();
         int balance = userRepository.showCoins(currentUser.getUserName());
-        Label lblBalance = new Label("Monedas: " + balance);
+        Label lblBalance = new Label(" : " + balance);
         lblBalance.setId("lblBalance");
 
-        lblBalance.setStyle("-fx-font-size: 10px; -fx-font-family: 'Press Start 2P';");
+        lblBalance.setStyle("-fx-font-size: 10px; -fx-font-family: 'Press Start 2P'; -fx-text-fill: #48ff00;");
 
-        VBox layoutBalance = new VBox(10);
-        layoutBalance.setAlignment(Pos.TOP_RIGHT);
-        layoutBalance.getChildren().add(lblBalance);
+        HBox coinBox = new HBox(5);
+        coinBox.setAlignment(Pos.CENTER_RIGHT);
+        coinBox.setPadding(new Insets(5));
+        coinBox.setStyle("-fx-background-color:rgb(0, 0, 0); -fx-border-color: #00ccff; -fx-border-radius: 5; -fx-background-radius: 5;");
+        coinBox.getChildren().addAll(checkGifCoins, lblBalance);
+
+        HBox coinBoxWrapper = new HBox(coinBox);
+        coinBoxWrapper.setAlignment(Pos.TOP_RIGHT);
+        coinBoxWrapper.setPadding(new Insets(10));
 
         Label lblCommingSoon = new Label("Proximamente productos en la tienda...");
         lblCommingSoon.setId("lblCommingSoon");
@@ -401,10 +426,21 @@ public class PixelCoinsWindow extends Application {
         layoutCommingSoon.getChildren().add(lblCommingSoon);
 
         VBox mainLayout = new VBox(10);
-        mainLayout.getChildren().addAll(layoutShop, layoutBalance, layoutCommingSoon);
+        mainLayout.getChildren().addAll(layoutShop, coinBoxWrapper, layoutCommingSoon);
         mainLayout.setAlignment(Pos.CENTER);
 
-        rightPane.setCenter(new StackPane(mainLayout));
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("./background_retro_launch_4.jpg")));
+        background.setPreserveRatio(false);
+        background.setOpacity(0.5);
+
+        StackPane stackPane = new StackPane();
+
+        stackPane.getChildren().addAll(background, mainLayout);
+
+        background.fitWidthProperty().bind(stackPane.widthProperty());
+        background.fitHeightProperty().bind(stackPane.heightProperty());
+
+        rightPane.setCenter(new StackPane(stackPane));
     }
 
     /**
@@ -454,31 +490,56 @@ public class PixelCoinsWindow extends Application {
      * agregar un juego a la lista de juegos disponibles.
      */
     public void RegisterGamesWindow() {
+
+        ImageView checkGifName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifName.setFitWidth(24);
+        checkGifName.setFitHeight(24);
+        checkGifName.setVisible(false);
+
+        ImageView checkGifGenre = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifGenre.setFitWidth(24);
+        checkGifGenre.setFitHeight(24);
+        checkGifGenre.setVisible(false);
+
+        ImageView checkGifPath = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        checkGifPath.setFitWidth(24);
+        checkGifPath.setFitHeight(24);
+        checkGifPath.setVisible(false);
+
         Stage stage = new Stage();
 
         Label lblName = new Label("Nombre del juego: ");
 
         TextField txtName = new TextField();
         txtName.setId("txtNameGame");
+        txtName.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifName.setVisible(newVal);
+        });
 
         HBox layoutName = new HBox(10);
         layoutName.setAlignment(Pos.CENTER);
-        layoutName.getChildren().addAll(lblName, txtName);
+        layoutName.getChildren().addAll(lblName, txtName, checkGifName);
 
         Label lblGenre = new Label("Genero: ");
 
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.setId("comboBox");
+        comboBox.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifGenre.setVisible(newVal);
+        });
         comboBox.getItems().addAll("Aventura", "RPG", "Shooter", "Terror", "Plataforma de juegos", "Emulador");
 
         HBox layoutGenre = new HBox(10);
         layoutGenre.setAlignment(Pos.CENTER);
-        layoutGenre.getChildren().addAll(lblGenre, comboBox);
+        layoutGenre.getChildren().addAll(lblGenre, comboBox, checkGifGenre);
 
         Label lblPath = new Label("Ruta del juego: ");
 
         TextField txtPath = new TextField();
         txtPath.setId("txtPath");
+        txtPath.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            checkGifPath.setVisible(newVal);
+        });
         txtPath.setEditable(false);
 
         Button btnBrowse = new Button("Buscar");
@@ -486,7 +547,7 @@ public class PixelCoinsWindow extends Application {
 
         HBox layoutPath = new HBox(10);
         layoutPath.setAlignment(Pos.CENTER);
-        layoutPath.getChildren().addAll(lblPath, txtPath, btnBrowse);
+        layoutPath.getChildren().addAll(lblPath, txtPath, btnBrowse, checkGifPath);
 
         Button btnAddGame = new Button("Añadir juego");
         btnAddGame.setId("btnAddGameRegisterGame");
@@ -526,7 +587,18 @@ public class PixelCoinsWindow extends Application {
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.getChildren().addAll(layoutName, layoutGenre, layoutPath, layoutButtons);
 
-        Scene scene = new Scene(mainLayout, 600, 600);
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("./background_retro_launch_4.jpg")));
+        background.setPreserveRatio(false);
+        background.setOpacity(0.5);
+
+        StackPane stackPane = new StackPane();
+
+        stackPane.getChildren().addAll(background, mainLayout);
+
+        background.fitWidthProperty().bind(stackPane.widthProperty());
+        background.fitHeightProperty().bind(stackPane.heightProperty());
+
+        Scene scene = new Scene(stackPane, 600, 600);
         scene.getStylesheets().add(getClass().getResource("styles/registerGamesWindow.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("PixelCoinsLauncher - Añadir juego");
