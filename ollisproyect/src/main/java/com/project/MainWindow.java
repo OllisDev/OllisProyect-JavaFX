@@ -83,7 +83,7 @@ public class MainWindow extends Application {
 
         btnLogin.setOnAction(e -> LogInWindow());
 
-        ImageView gifBackground = new ImageView(new Image(getClass().getResourceAsStream("./pixel_blue.gif")));
+        ImageView gifBackground = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_blue.gif")));
         gifBackground.setFitWidth(1620);
         gifBackground.setFitHeight(920);
         gifBackground.setPreserveRatio(false);
@@ -96,7 +96,8 @@ public class MainWindow extends Application {
         root.getChildren().addAll(gifBackground, layout);
 
         Scene scene = new Scene(root, 1620, 920);
-        scene.getStylesheets().add(getClass().getResource("styles/mainWindow.css").toExternalForm());
+
+        scene.getStylesheets().add(getClass().getResource("/com/project/styles/mainWindow.css").toExternalForm());
 
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -112,67 +113,68 @@ public class MainWindow extends Application {
     public void RegisterWindow() {
         Stage stage = new Stage();
 
-        ImageView checkGifName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifName = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifName.setFitWidth(24);
         checkGifName.setFitHeight(24);
         checkGifName.setVisible(false);
 
-        ImageView checkGifLastName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifLastName = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifLastName.setFitWidth(24);
         checkGifLastName.setFitHeight(24);
         checkGifLastName.setVisible(false);
 
-        ImageView checkGifUserName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifUserName = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifUserName.setFitWidth(24);
         checkGifUserName.setFitHeight(24);
         checkGifUserName.setVisible(false);
 
-        ImageView checkGifPassword = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifPassword = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifPassword.setFitWidth(24);
         checkGifPassword.setFitHeight(24);
         checkGifPassword.setVisible(false);
 
-        ImageView checkGifEmail = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifEmail = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifEmail.setFitWidth(24);
         checkGifEmail.setFitHeight(24);
         checkGifEmail.setVisible(false);
 
-        ImageView checkGifBirthday = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifBirthday = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifBirthday.setFitWidth(24);
         checkGifBirthday.setFitHeight(24);
         checkGifBirthday.setVisible(false);
 
-        ImageView checkErrorName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        ImageView checkErrorName = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin_red.gif")));
         checkErrorName.setFitWidth(24);
         checkErrorName.setFitHeight(24);
         checkErrorName.setVisible(false);
 
-        ImageView checkErrorLastName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        ImageView checkErrorLastName = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin_red.gif")));
         checkErrorLastName.setFitWidth(24);
         checkErrorLastName.setFitHeight(24);
         checkErrorLastName.setVisible(false);
 
-        ImageView checkErrorUserName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        ImageView checkErrorUserName = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin_red.gif")));
         checkErrorUserName.setFitWidth(24);
         checkErrorUserName.setFitHeight(24);
         checkErrorUserName.setVisible(false);
 
-        ImageView checkErrorPassword = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        ImageView checkErrorPassword = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin_red.gif")));
         checkErrorPassword.setFitWidth(24);
         checkErrorPassword.setFitHeight(24);
         checkErrorPassword.setVisible(false);
 
-        ImageView checkErrorEmail = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        ImageView checkErrorEmail = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin_red.gif")));
         checkErrorEmail.setFitWidth(24);
         checkErrorEmail.setFitHeight(24);
         checkErrorEmail.setVisible(false);
 
-        ImageView checkErrorBirthday = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        ImageView checkErrorBirthday = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin_red.gif")));
         checkErrorBirthday.setFitWidth(24);
         checkErrorBirthday.setFitHeight(24);
         checkErrorBirthday.setVisible(false);
 
         Label lblRegister = new Label("REGISTRO");
+        lblRegister.setId("lblRegister");
         lblRegister.getStyleClass().add("label-register");
         HBox layoutRegister = new HBox(10);
         layoutRegister.getChildren().addAll(lblRegister);
@@ -382,7 +384,7 @@ public class MainWindow extends Application {
         mainLayout.getChildren().addAll(layoutRegister, layoutName, layoutLastName, layoutUserName, layoutPassword, layoutEmail, layoutBirthday, layoutButtons);
         mainLayout.setAlignment(Pos.CENTER);
 
-        ImageView gifBackground = new ImageView(new Image(getClass().getResourceAsStream("./videogames.gif")));
+        ImageView gifBackground = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/videogames.gif")));
         gifBackground.setFitWidth(1620);
         gifBackground.setFitHeight(920);
         gifBackground.setPreserveRatio(false);
@@ -392,7 +394,7 @@ public class MainWindow extends Application {
         root.getChildren().addAll(gifBackground, mainLayout);
 
         Scene scene = new Scene(root, 1620, 920);
-        scene.getStylesheets().add(getClass().getResource("styles/registerWindow.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/com/project/styles/registerWindow.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("PixelCoinsLauncher - Registrarse");
         stage.setResizable(false);
@@ -406,22 +408,22 @@ public class MainWindow extends Application {
     public void LogInWindow() {
         Stage stage = new Stage();
 
-        ImageView checkGifUserName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifUserName = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifUserName.setFitWidth(24);
         checkGifUserName.setFitHeight(24);
         checkGifUserName.setVisible(false);
 
-        ImageView checkGifPassword = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifPassword = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifPassword.setFitWidth(24);
         checkGifPassword.setFitHeight(24);
         checkGifPassword.setVisible(false);
 
-        ImageView checkErrorUserName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        ImageView checkErrorUserName = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin_red.gif")));
         checkErrorUserName.setFitWidth(24);
         checkErrorUserName.setFitHeight(24);
         checkErrorUserName.setVisible(false);
 
-        ImageView checkErrorPassword = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin_red.gif")));
+        ImageView checkErrorPassword = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin_red.gif")));
         checkErrorPassword.setFitWidth(24);
         checkErrorPassword.setFitHeight(24);
         checkErrorPassword.setVisible(false);
@@ -538,7 +540,7 @@ public class MainWindow extends Application {
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.getChildren().addAll(layoutLogIn, layoutUserName, layoutPassword, layoutButtons);
 
-        ImageView gifBackground = new ImageView(new Image(getClass().getResourceAsStream("./videogames.gif")));
+        ImageView gifBackground = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/videogames.gif")));
         gifBackground.setFitWidth(1620);
         gifBackground.setFitHeight(920);
         gifBackground.setPreserveRatio(false);
@@ -548,7 +550,7 @@ public class MainWindow extends Application {
         root.getChildren().addAll(gifBackground, mainLayout);
 
         Scene scene = new Scene(root, 1620, 920);
-        scene.getStylesheets().add(getClass().getResource("styles/loginWindow.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/com/project/styles/loginWindow.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("PixelCoinsLauncher - Iniciar sesión");
         stage.setResizable(false);

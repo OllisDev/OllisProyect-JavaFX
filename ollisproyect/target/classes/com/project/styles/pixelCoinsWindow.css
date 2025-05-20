@@ -50,8 +50,23 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0); /* Sombra suave opcional */
 }
 
+.button {
+    -fx-font-family: 'Press Start 2P', monospace; /* fuente pixel art */
+    -fx-font-size: 12px;
+    -fx-background-color: #fbff00;
+    -fx-text-fill: #0ff;
+    -fx-border-color: rgb(0, 0, 0);
+    -fx-border-width: 3px;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 10 15;
+}
+
 .button:hover {
-    -fx-background-color: #ff0000; 
+    -fx-background-color: rgb(155, 83, 0);
+    -fx-text-fill: #222;
+    -fx-border-color: #000000;
+    -fx-effect: dropshadow(gaussian, white, 5, 0.3, 0, 0);
 }
 
 .border-pane2 {

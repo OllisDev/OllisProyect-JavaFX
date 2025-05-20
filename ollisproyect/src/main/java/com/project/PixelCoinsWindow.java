@@ -96,9 +96,12 @@ public class PixelCoinsWindow extends Application {
     @Override
     public void start(Stage pixelCoinWindow) {
 
-        Button btnAccount = createImageButton("Cuenta", "/com/project/account_pixel.png");
-        Button btnLaunch = createImageButton("Lanzador", "/com/project/rocket_pixel.png");
-        Button btnShop = createImageButton("Tienda", "/com/project/shop_pixel.png");
+        Button btnAccount = createImageButton("Cuenta", "/com/project/images/account_pixel.png");
+        btnAccount.getStyleClass().add("button");
+        Button btnLaunch = createImageButton("Lanzador", "/com/project/images/rocket_pixel.png");
+        btnLaunch.getStyleClass().add("button");
+        Button btnShop = createImageButton("Tienda", "/com/project/images/shop_pixel.png");
+        btnShop.getStyleClass().add("button");
 
         btnAccount.setOnAction(e -> showAccountScene());
         btnLaunch.setOnAction(e -> showLaunchScene());
@@ -133,7 +136,7 @@ public class PixelCoinsWindow extends Application {
         rightPane.setPrefWidth(400);
         mainPane.setCenter(rightPane);
 
-        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("./background_pixel_blocks_2.jpg")));
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/background_pixel_blocks_2.jpg")));
         background.setFitWidth(200);
         background.setFitHeight(920);
         background.setPreserveRatio(false);
@@ -145,7 +148,7 @@ public class PixelCoinsWindow extends Application {
         mainPane.setLeft(stackPane);
 
         Scene scene = new Scene(mainPane, 1620, 920);
-        scene.getStylesheets().add(getClass().getResource("styles/pixelCoinsWindow.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/com/project/styles/pixelCoinsWindow.css").toExternalForm());
 
         pixelCoinWindow.setScene(scene);
         pixelCoinWindow.setResizable(false);
@@ -177,7 +180,6 @@ public class PixelCoinsWindow extends Application {
         // Crear el botón y asignarle el VBox como gráfico
         Button button = new Button();
         button.setGraphic(vbox);
-        button.setStyle("-fx-background-color: transparent; -fx-padding: 10px;");
 
         return button;
     }
@@ -188,17 +190,17 @@ public class PixelCoinsWindow extends Application {
      */
     public void showAccountScene() {
 
-        ImageView checkGifUserName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifUserName = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifUserName.setFitWidth(24);
         checkGifUserName.setFitHeight(24);
         checkGifUserName.setVisible(false);
 
-        ImageView checkGifPassword = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifPassword = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifPassword.setFitWidth(24);
         checkGifPassword.setFitHeight(24);
         checkGifPassword.setVisible(false);
 
-        ImageView checkGifEmail = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifEmail = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifEmail.setFitWidth(24);
         checkGifEmail.setFitHeight(24);
         checkGifEmail.setVisible(false);
@@ -283,7 +285,7 @@ public class PixelCoinsWindow extends Application {
         mainLayout.getChildren().addAll(layoutAccount, layoutUser);
         mainLayout.setAlignment(Pos.CENTER);
 
-        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("./videogames_account.jpg")));
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/videogames_account.jpg")));
         background.setPreserveRatio(false);
         background.setOpacity(0.1);
 
@@ -379,7 +381,7 @@ public class PixelCoinsWindow extends Application {
         mainLayout.getChildren().addAll(layoutLaunch, layoutTable, layoutButtons);
         mainLayout.setAlignment(Pos.CENTER);
 
-        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("./background_retro_launch_4.jpg")));
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/background_retro_launch_4.jpg")));
         background.setPreserveRatio(false);
         background.setOpacity(0.5);
 
@@ -399,7 +401,7 @@ public class PixelCoinsWindow extends Application {
      * del usuario y productos disponibles.
      */
     public void showShopScene() {
-        ImageView checkGifCoins = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifCoins = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifCoins.setFitWidth(24);
         checkGifCoins.setFitHeight(24);
         checkGifCoins.setVisible(true);
@@ -440,7 +442,7 @@ public class PixelCoinsWindow extends Application {
         mainLayout.getChildren().addAll(layoutShop, coinBoxWrapper, layoutCommingSoon);
         mainLayout.setAlignment(Pos.CENTER);
 
-        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("./background_retro_launch_4.jpg")));
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/background_retro_launch_4.jpg")));
         background.setPreserveRatio(false);
         background.setOpacity(0.5);
 
@@ -502,17 +504,17 @@ public class PixelCoinsWindow extends Application {
      */
     public void RegisterGamesWindow() {
 
-        ImageView checkGifName = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifName = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifName.setFitWidth(24);
         checkGifName.setFitHeight(24);
         checkGifName.setVisible(false);
 
-        ImageView checkGifGenre = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifGenre = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifGenre.setFitWidth(24);
         checkGifGenre.setFitHeight(24);
         checkGifGenre.setVisible(false);
 
-        ImageView checkGifPath = new ImageView(new Image(getClass().getResourceAsStream("./pixel_coin.gif")));
+        ImageView checkGifPath = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifPath.setFitWidth(24);
         checkGifPath.setFitHeight(24);
         checkGifPath.setVisible(false);
@@ -598,7 +600,7 @@ public class PixelCoinsWindow extends Application {
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.getChildren().addAll(layoutName, layoutGenre, layoutPath, layoutButtons);
 
-        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("./background_retro_launch_4.jpg")));
+        ImageView background = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/background_retro_launch_4.jpg")));
         background.setPreserveRatio(false);
         background.setOpacity(0.5);
 
@@ -610,7 +612,7 @@ public class PixelCoinsWindow extends Application {
         background.fitHeightProperty().bind(stackPane.heightProperty());
 
         Scene scene = new Scene(stackPane, 600, 600);
-        scene.getStylesheets().add(getClass().getResource("styles/registerGamesWindow.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/com/project/styles/registerGamesWindow.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("PixelCoinsLauncher - Añadir juego");
         stage.setResizable(false);
