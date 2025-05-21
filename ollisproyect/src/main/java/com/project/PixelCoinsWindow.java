@@ -314,6 +314,7 @@ public class PixelCoinsWindow extends Application {
      * juegos desde la aplicación.
      */
     public void showLaunchScene() {
+        User currentUser = mainWindow.getCurrentUser();
         Label lblLaunch = new Label("LANZADOR");
         lblLaunch.getStyleClass().add("label-launch");
         VBox layoutLaunch = new VBox(15);
@@ -336,7 +337,7 @@ public class PixelCoinsWindow extends Application {
         table.setPrefHeight(300);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        List<Game> games = GameRepository.showListGames();
+        List<Game> games = GameRepository.showListGames(currentUser.getId());
 
         table.getItems().addAll(games);
 
@@ -356,7 +357,7 @@ public class PixelCoinsWindow extends Application {
 
         btnAddGame.setOnAction(e -> {
             RegisterGamesWindow();
-            table.getItems().setAll(GameRepository.showListGames());
+            table.getItems().setAll(GameRepository.showListGames(currentUser.getId()));
         });
 
         btnDeleteGame.setOnAction(e -> {
@@ -503,7 +504,7 @@ public class PixelCoinsWindow extends Application {
      * agregar un juego a la lista de juegos disponibles.
      */
     public void RegisterGamesWindow() {
-
+        User currentUser = mainWindow.getCurrentUser();
         ImageView checkGifName = new ImageView(new Image(getClass().getResourceAsStream("/com/project/images/pixel_coin.gif")));
         checkGifName.setFitWidth(24);
         checkGifName.setFitHeight(24);
@@ -577,7 +578,7 @@ public class PixelCoinsWindow extends Application {
             }
 
             // Verificar si el juego ya existe en la base de datos o lista
-            List<Game> games = GameRepository.showListGames();
+            List<Game> games = GameRepository.showListGames(currentUser.getId());
             boolean exists = games.stream().anyMatch(game -> game.getExePath().equalsIgnoreCase(exePath));
 
             if (exists) {
@@ -585,7 +586,7 @@ public class PixelCoinsWindow extends Application {
                 return;
             } else {
                 Game newGame = new Game(gameName, genre, exePath);
-                gameRepository.addListGames(newGame);
+                gameRepository.addListGames(newGame, currentUser.getId());
                 showAlert(Alert.AlertType.INFORMATION, "Éxito", null, "Juego agregado correctamente");
                 stage.close(); // Cierra la ventana de registro
             }
