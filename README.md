@@ -106,6 +106,12 @@ mvn test
 
 Desarrollado por OllisDev.
 
+## Proximamente
+
+- Aplicación web.
+- Aplicación movil.
+- Artículos en la tienda.
+
 ---
 
 **Nota:** Si tienes problemas con rutas de recursos o dependencias de JavaFX, revisa la configuración de tu IDE y el archivo [`pom.xml`](pom.xml).
