@@ -1,8 +1,11 @@
 package com.project.repository;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * Clase de utilidad para gestionar la conexión a la base de datos. Proporciona
@@ -10,21 +13,37 @@ import java.sql.SQLException;
  */
 public class ConnectionDB {
 
+    private static final Properties props = new Properties();
+
+    static {
+        try (InputStream input = ConnectionDB.class.getClassLoader().getResourceAsStream("com/project/config/config.properties")) {
+            if (input != null) {
+                props.load(input);
+            } else {
+                throw new RuntimeException("No se encontró el archivo config.properties");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error al cargar config.properties", e);
+        }
+    }
+
     /**
      * URL de la base de datos. Especifica la ubicación de la base de datos en
      * Railway MySQL.
      */
-    private static final String DB_URL = System.getenv("DB_URL");
+    private static final String DB_URL = props.getProperty("db.url");
 
     /**
-     * Nombre de usuario para la conexión a la base de datos.
+     * Nombre de usuario para la conexión a la base de datos. Especifica el
+     * usuario de la base de datos en Railway SQL
      */
-    private static final String DB_USER = System.getenv("DB_USER");
+    private static final String DB_USER = props.getProperty("db.user");
 
     /**
-     * Contraseña para la conexión a la base de datos.
+     * Contraseña para la conexión a la base de datos. Especifica la contraseña
+     * de la base de datos en Railway SQL
      */
-    private static final String DB_PASS = System.getenv("DB_PASS");
+    private static final String DB_PASS = props.getProperty("db.pass");
 
     /**
      * Obtiene una conexión a la base de datos MySQL.
