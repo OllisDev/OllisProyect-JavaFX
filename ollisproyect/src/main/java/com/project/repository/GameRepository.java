@@ -92,21 +92,40 @@ public class GameRepository {
      * @param game El objeto {@link Game} que representa el juego a eliminar.
      * Debe contener un ID válido.
      */
-    public static void deleteListGames(Game game) {
-        if (game.getId() == null) {
-            System.out.println("Error: Intentando eliminar un juego con ID nulo");
-            return;
-        }
-        String query = "DELETE FROM games WHERE id = ?";
-        try (Connection conn = ConnectionDB.getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setLong(1, game.getId());
+    public static void deleteListGames(long userId, long gameId) {
+        String deleteRelation = "DELETE FROM Usuario_Games WHERE user_id = ? AND game_id = ?";
+        String checkRelation = "SELECT COUNT(*) FROM Usuario_Games WHERE game_id = ?";
+        String deleteSessions = "DELETE FROM GameSession WHERE game_id = ?";
+        String deleteGame = "DELETE FROM games WHERE id = ?";
 
-            int rows = pstmt.executeUpdate();
+        try (Connection conn = ConnectionDB.getConnection()) {
+            // 1. Eliminar la relación usuario-juego
+            try (PreparedStatement pstmt = conn.prepareStatement(deleteRelation)) {
+                pstmt.setLong(1, userId);
+                pstmt.setLong(2, gameId);
+                pstmt.executeUpdate();
+            }
 
-            if (rows > 0) {
-                System.out.println("Juego eliminado de la base de datos");
-            } else {
-                System.out.println("Error: no se encontró el juego en la base de datos");
+            // 2. Verificar si el juego sigue asignado a algún usuario
+            try (PreparedStatement pstmt = conn.prepareStatement(checkRelation)) {
+                pstmt.setLong(1, gameId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next() && rs.getInt(1) == 0) {
+                        // 3. Eliminar sesiones asociadas al juego
+                        try (PreparedStatement delSessions = conn.prepareStatement(deleteSessions)) {
+                            delSessions.setLong(1, gameId);
+                            delSessions.executeUpdate();
+                        }
+                        // 4. Si no está asignado a nadie, eliminar el juego
+                        try (PreparedStatement delGame = conn.prepareStatement(deleteGame)) {
+                            delGame.setLong(1, gameId);
+                            delGame.executeUpdate();
+                            System.out.println("Juego eliminado completamente de la base de datos.");
+                        }
+                    } else {
+                        System.out.println("Juego eliminado solo de la lista del usuario.");
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

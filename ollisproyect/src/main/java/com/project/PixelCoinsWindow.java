@@ -338,8 +338,8 @@ public class PixelCoinsWindow extends Application {
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         List<Game> games = GameRepository.showListGames(currentUser.getId());
-
-        table.getItems().addAll(games);
+        table.getItems().clear();
+        table.getItems().addAll(GameRepository.showListGames(currentUser.getId()));
 
         VBox layoutTable = new VBox(10);
         layoutTable.getChildren().addAll(table);
@@ -362,9 +362,9 @@ public class PixelCoinsWindow extends Application {
 
         btnDeleteGame.setOnAction(e -> {
             Game selectedGame = table.getSelectionModel().getSelectedItem();
-            if (selectedGame != null) {
-                gameRepository.deleteListGames(selectedGame);
-                table.getItems().remove(selectedGame);
+            if (selectedGame != null && currentUser != null) {
+                gameRepository.deleteListGames(currentUser.getId(), selectedGame.getId());
+                table.getItems().setAll(GameRepository.showListGames(currentUser.getId()));
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", null, "Seleccione un juego para eliminar.");
             }
