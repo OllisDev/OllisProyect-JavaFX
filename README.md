@@ -38,52 +38,13 @@ ollisproyect/
 └── target/
 ```
 
-## Instalación y Ejecución
-
-### 1. Requisitos
+## Requisitos
 
 - Java 17 o superior
 - Maven 3.6+
 - JavaFX SDK (si usas JDK sin JavaFX incluido)
 - Base de datos compatible (ej. MySQL, SQLite, etc.)
 
-### 2. Compilar el proyecto
-
-Desde la carpeta `ollisproyect/`:
-
-```sh
-mvn clean package
-```
-
-### 3. Ejecutar la aplicación
-
-```sh
-mvn javafx:run
-```
-
-O ejecuta el JAR generado:
-
-```sh
-java -jar target/ollisproyect-1.0-SNAPSHOT-jar-with-dependencies.jar
-```
-
-### 4. Crear instalador .exe (Windows)
-
-Utiliza `jpackage` para generar el instalador ejecutable:
-
-```sh
-jpackage ^
-  --type exe ^
-  --input target ^
-  --name PixelCoinsLauncher ^
-  --main-jar ollisproyect-1.0-SNAPSHOT-jar-with-dependencies.jar ^
-  --main-class com.project.MainWindow ^
-  --java-options "--add-opens=java.base/java.lang=ALL-UNNAMED" ^
-  --icon src/main/resources/com/project/images/icon.ico ^
-  --dest dist
-```
-
-Ajusta las rutas según tu entorno y asegúrate de incluir JavaFX en el classpath si es necesario.
 
 ## Pruebas
 
