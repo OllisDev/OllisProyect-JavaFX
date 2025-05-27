@@ -46,6 +46,50 @@ ollisproyect/
 - Base de datos compatible (ej. MySQL, SQLite, etc.)
 
 
+## Instalación
+
+Sigue estos pasos para instalar y ejecutar PixelCoinsLauncher correctamente:
+
+1. **Clona el repositorio**
+   ```sh
+   git clone https://github.com/tuusuario/OllisProyect-JavaFX.git
+   cd OllisProyect-JavaFX
+   ```
+
+2. **Configura la base de datos**
+   - Crea una base de datos MySQL (o usa la configuración proporcionada).
+   - Guarda un archivo en `src/main/resources/com/project/config/config.properties` con los datos de conexión:
+     ```
+     db.url=jdbc:mysql://nozomi.proxy.rlwy.net:50148/railway>
+     db.user=root
+     db.pass=JfUCrfTcckXeCFHdatvjhJLEGvtJOEWA
+     ```
+
+3. **Instala Java y Maven**
+   - Asegúrate de tener instalado Java 17 o superior.
+   - Asegúrate de tener instalado el SDK de JavaFX 21.0.2.
+   - Instala Maven 3.6 o superior.
+
+4. **Instala JavaFX SDK** (si tu JDK no lo incluye)
+   - Descarga JavaFX desde [https://gluonhq.com/products/javafx/](https://gluonhq.com/products/javafx/)
+   - Configura las variables de entorno si es necesario.
+
+5. **Compila el proyecto**
+   ```sh
+   mvn clean package -DskipTests 
+   ```
+
+6. **Ejecuta la aplicación**
+   - Desde Maven:
+     ```sh
+     mvn javafx:run
+     ```
+   - O ejecuta el JAR generado:
+     ```sh
+     java -jar target/ollisproyect-1.0-SNAPSHOT-jar-with-dependencies.jar
+     ```
+
+
 ## Pruebas
 
 Las pruebas unitarias están en [`src/test/java`](src/test/java):
