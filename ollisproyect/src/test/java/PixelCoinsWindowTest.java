@@ -91,7 +91,12 @@ class PixelCoinsWindowTest extends ApplicationTest {
     @Test
     void testShowLaunchScene() throws Exception {
         FxToolkit.setupStage(stage -> {
-            PixelCoinsWindow pixelCoinsWindow = new PixelCoinsWindow(new MainWindow());
+            MainWindow mainWindow = new MainWindow();
+            User testUser = new User("OLLIS950", "password123", "iker@example.com");
+            testUser.setId(1L); // Asigna un id válido para evitar el NullPointerException
+            mainWindow.setCurrentUser(testUser);
+
+            PixelCoinsWindow pixelCoinsWindow = new PixelCoinsWindow(mainWindow);
             pixelCoinsWindow.start(stage);
             pixelCoinsWindow.showLaunchScene();
         });
